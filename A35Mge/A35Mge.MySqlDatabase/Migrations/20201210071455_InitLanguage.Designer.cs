@@ -3,14 +3,16 @@ using System;
 using A35Mge.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace A35Mge.MySqlDatabase.Migrations
 {
     [DbContext(typeof(A35MgeDbContext))]
-    partial class A35MgeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201210071455_InitLanguage")]
+    partial class InitLanguage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,9 +77,6 @@ namespace A35Mge.MySqlDatabase.Migrations
 
                     b.Property<DateTime?>("ModifyDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("TranslateCode")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("TranslateContent")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");

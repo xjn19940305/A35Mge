@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,7 +31,11 @@ namespace A35Mge.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
             var config = Configuration.GetSection("Connection");
             services.AddDbContext<A35MgeDbContext>(options => options.UseMySql(config?.Value ?? string.Empty, mysql =>
             {
@@ -63,6 +68,25 @@ namespace A35Mge.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+            //允许一个或多个来源可以跨域
+            services.AddCors(options =>
+            {
+                options.AddPolicy("cors",
+
+                builder => builder.AllowAnyOrigin()
+
+                .WithMethods("GET", "POST", "HEAD", "PUT", "DELETE", "OPTIONS")
+
+                );
+                options.AddPolicy("CustomCorsPolicy", policy =>
+                {
+                    // 设定允许跨域的来源，有多个可以用','隔开
+                    policy.WithOrigins("http://localhost:8000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,7 +102,7 @@ namespace A35Mge.Api
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors("CustomCorsPolicy");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -90,6 +114,7 @@ namespace A35Mge.Api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

@@ -9,7 +9,7 @@ namespace A35Mge.Api.Controllers
 {
     [Produces("application/json")]
     [ApiController]
-    [Route("[controller]/[Action]")]
+    [Route("api/[controller]/[action]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

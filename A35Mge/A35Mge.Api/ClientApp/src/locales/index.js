@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import storage from 'store'
 import moment from 'moment'
-
+import languageApi from '@/api/language'
 // default lang
 import enUS from './lang/en-US'
 
@@ -33,22 +33,25 @@ function setI18nLanguage (lang) {
 }
 
 export function loadLanguageAsync (lang = defaultLang) {
-  return new Promise(resolve => {
+  return new Promise(async resolve => {
     // 缓存语言设置
     storage.set('lang', lang)
-    if (i18n.locale !== lang) {
-      if (!loadedLanguages.includes(lang)) {
-        return import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}`).then(msg => {
-          const locale = msg.default
-          i18n.setLocaleMessage(lang, locale)
-          loadedLanguages.push(lang)
-          moment.updateLocale(locale.momentName, locale.momentLocale)
-          return setI18nLanguage(lang)
-        })
-      }
-      return resolve(setI18nLanguage(lang))
-    }
-    return resolve(lang)
+    console.log('切换语言', lang)
+    // 去查询应用+语言包的翻译内容
+    var local = await import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}`)
+    var server = await languageApi.getTranslate(lang) || []
+    Promise.all([local, server]).then(res => {
+      server = server || []
+      const locale = local.default
+      server.map(e => {
+        locale[e.translateCode] = e.translateContent
+      })
+      i18n.setLocaleMessage(lang, locale)
+      loadedLanguages.push(lang)
+      moment.updateLocale(locale.momentName, locale.momentLocale)
+      return setI18nLanguage(lang)
+    })
+    return resolve(setI18nLanguage(lang))
   })
 }
 

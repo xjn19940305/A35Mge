@@ -10,27 +10,28 @@ namespace A35Mge.Database
     {
 
         public DbSet<User> Users { get; set; }
-
+        public DbSet<LanguageType> LanguageType { get; set; }
+        public DbSet<Translate> Translate { get; set; }
 
         public A35MgeDbContext(DbContextOptions<A35MgeDbContext> options) : base(options)
         {
-           
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder
-                           .HasAnnotation("ProductVersion", "3.1.8")
+                           .HasAnnotation("ProductVersion", "3.1.10")
                            .HasAnnotation("Relational:MaxIdentifierLength", 64);
+            modelBuilder.Entity("A35Mge.Database.Entities.Translate", b =>
+            {
+                b.HasOne("A35Mge.Database.Entities.LanguageType", "LanguageType")
+                    .WithMany("TranslateList")
+                    .HasForeignKey("LanguageTypeId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
-
-            //modelBuilder.Entity("Test.Database.Entities.Hobbies", b =>
-            //{
-            //    b.HasOne("Test.Database.Entities.User", "User")
-            //        .WithMany("Hobbies")
-            //        .HasForeignKey("UserId")
-            //        .OnDelete(DeleteBehavior.Cascade);
-            //});
         }
 
     }

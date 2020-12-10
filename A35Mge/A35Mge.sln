@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.Database", "A35Mge.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.MySqlDatabase", "A35Mge.MySqlDatabase\A35Mge.MySqlDatabase.csproj", "{82FB1222-365F-4B00-8A41-13340A7AD5A9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{33849B27-CD6C-4553-B408-EA8EB6B719E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.Model", "A35Mge.Model\A35Mge.Model.csproj", "{DBE93805-E3EF-405F-B512-EBC163CB9952}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,10 @@ Global
 		{82FB1222-365F-4B00-8A41-13340A7AD5A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82FB1222-365F-4B00-8A41-13340A7AD5A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82FB1222-365F-4B00-8A41-13340A7AD5A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBE93805-E3EF-405F-B512-EBC163CB9952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBE93805-E3EF-405F-B512-EBC163CB9952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBE93805-E3EF-405F-B512-EBC163CB9952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBE93805-E3EF-405F-B512-EBC163CB9952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +44,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1212989F-5144-4AF7-A08F-C6779742D0B4} = {E6F50EA5-D6B0-460A-9AD9-BB9D70EC4D82}
 		{82FB1222-365F-4B00-8A41-13340A7AD5A9} = {E6F50EA5-D6B0-460A-9AD9-BB9D70EC4D82}
+		{DBE93805-E3EF-405F-B512-EBC163CB9952} = {33849B27-CD6C-4553-B408-EA8EB6B719E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C589AC26-FE90-477D-8AC6-AFF115CF03C7}

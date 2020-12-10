@@ -1,19 +1,25 @@
 <template>
   <div :class="wrpCls">
-    <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
-    <select-lang :class="prefixCls" />
+    <avatar-dropdown :menu="showMenu" :current-user="currentUser" class="ant-pro-global-header-index-action" />
+    <a-dropdown>
+      <span class="ant-pro-global-header-index-action">
+        <a-icon type="global" :style="{ fontSize: '16px' }" />
+      </span>
+      <a-menu slot="overlay" @click="changeLang">
+        <a-menu-item v-for="item in langList" :key="item.LanguageCode">{{ item.Description }}</a-menu-item>
+      </a-menu>
+    </a-dropdown>
   </div>
 </template>
 
 <script>
 import AvatarDropdown from './AvatarDropdown'
-import SelectLang from '@/components/SelectLang'
-
+import i18nMixin from '@/store/i18n-mixin'
+import languageApi from '@/api/language'
 export default {
   name: 'RightContent',
   components: {
-    AvatarDropdown,
-    SelectLang
+    AvatarDropdown
   },
   props: {
     prefixCls: {
@@ -36,7 +42,8 @@ export default {
   data () {
     return {
       showMenu: true,
-      currentUser: {}
+      currentUser: {},
+      langList: []
     }
   },
   computed: {
@@ -47,12 +54,23 @@ export default {
       }
     }
   },
+  mixins: [i18nMixin],
   mounted () {
-    setTimeout(() => {
-      this.currentUser = {
-        name: 'Serati Ma'
-      }
-    }, 1500)
+    this.currentUser = {
+      name: 'Serati Ma'
+    }
+    this.getLanguageList()
+  },
+  methods: {
+    async getLanguageList () {
+      // 根据应用CODE拿到应用ID
+      var data = await languageApi.getLanglist() || []
+      this.langList = data
+      console.log(this.langList)
+    },
+    changeLang ({ key }) {
+      this.setLang(key)
+    }
   }
 }
 </script>
