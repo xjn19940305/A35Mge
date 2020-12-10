@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>A35Mge.Api</name>
+    </assembly>
+    <members>
+        <member name="M:A35Mge.Api.Controllers.WeatherForecastController.Get">
+            <summary>
+            Demo Test
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
