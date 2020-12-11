@@ -3,17 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.Api", "A35Mge.Api\A35Mge.Api.csproj", "{3ED6F268-E358-4A3A-9EDC-EA2DB672AD8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.Api", "A35Mge.Api\A35Mge.Api.csproj", "{3ED6F268-E358-4A3A-9EDC-EA2DB672AD8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{E6F50EA5-D6B0-460A-9AD9-BB9D70EC4D82}"
+	ProjectSection(SolutionItems) = preProject
+		A35Mge.IDS\WeatherForecast.cs = A35Mge.IDS\WeatherForecast.cs
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.Database", "A35Mge.Database\A35Mge.Database.csproj", "{1212989F-5144-4AF7-A08F-C6779742D0B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.Database", "A35Mge.Database\A35Mge.Database.csproj", "{1212989F-5144-4AF7-A08F-C6779742D0B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.MySqlDatabase", "A35Mge.MySqlDatabase\A35Mge.MySqlDatabase.csproj", "{82FB1222-365F-4B00-8A41-13340A7AD5A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.MySqlDatabase", "A35Mge.MySqlDatabase\A35Mge.MySqlDatabase.csproj", "{82FB1222-365F-4B00-8A41-13340A7AD5A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{33849B27-CD6C-4553-B408-EA8EB6B719E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.Model", "A35Mge.Model\A35Mge.Model.csproj", "{DBE93805-E3EF-405F-B512-EBC163CB9952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.Model", "A35Mge.Model\A35Mge.Model.csproj", "{DBE93805-E3EF-405F-B512-EBC163CB9952}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{448EC748-51CD-48B3-A2A0-B5655FE4ED2F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{BFEEA4EE-5A47-4EF4-BEF0-3FC09436D26C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.IDS", "A35Mge.IDS\A35Mge.IDS.csproj", "{5DE38DB1-1109-4857-A4A7-C562C6BCE41A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +46,20 @@ Global
 		{DBE93805-E3EF-405F-B512-EBC163CB9952}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBE93805-E3EF-405F-B512-EBC163CB9952}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBE93805-E3EF-405F-B512-EBC163CB9952}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DE38DB1-1109-4857-A4A7-C562C6BCE41A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DE38DB1-1109-4857-A4A7-C562C6BCE41A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DE38DB1-1109-4857-A4A7-C562C6BCE41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DE38DB1-1109-4857-A4A7-C562C6BCE41A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{3ED6F268-E358-4A3A-9EDC-EA2DB672AD8E} = {BFEEA4EE-5A47-4EF4-BEF0-3FC09436D26C}
 		{1212989F-5144-4AF7-A08F-C6779742D0B4} = {E6F50EA5-D6B0-460A-9AD9-BB9D70EC4D82}
 		{82FB1222-365F-4B00-8A41-13340A7AD5A9} = {E6F50EA5-D6B0-460A-9AD9-BB9D70EC4D82}
 		{DBE93805-E3EF-405F-B512-EBC163CB9952} = {33849B27-CD6C-4553-B408-EA8EB6B719E3}
+		{5DE38DB1-1109-4857-A4A7-C562C6BCE41A} = {BFEEA4EE-5A47-4EF4-BEF0-3FC09436D26C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C589AC26-FE90-477D-8AC6-AFF115CF03C7}

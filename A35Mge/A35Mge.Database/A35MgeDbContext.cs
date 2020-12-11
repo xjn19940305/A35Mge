@@ -13,6 +13,8 @@ namespace A35Mge.Database
         public DbSet<LanguageType> LanguageType { get; set; }
         public DbSet<Translate> Translate { get; set; }
 
+        //public DbSet<Client> Client { get; set; }
+
         public A35MgeDbContext(DbContextOptions<A35MgeDbContext> options) : base(options)
         {
 
