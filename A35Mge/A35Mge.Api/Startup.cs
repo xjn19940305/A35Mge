@@ -1,4 +1,6 @@
- using A35Mge.Database;
+using A35Mge.Api.AtMap;
+using A35Mge.Database;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -68,6 +70,7 @@ namespace A35Mge.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+            services.AddAutoMapper(typeof(AutoMapConfig));
             //允许一个或多个来源可以跨域
             services.AddCors(options =>
             {

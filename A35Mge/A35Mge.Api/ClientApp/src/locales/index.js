@@ -44,7 +44,7 @@ export function loadLanguageAsync (lang = defaultLang) {
       server = server || []
       const locale = local.default
       server.map(e => {
-        locale[e.translateCode] = e.translateContent
+        locale[e.TranslateCode] = e.TranslateContent
       })
       i18n.setLocaleMessage(lang, locale)
       loadedLanguages.push(lang)

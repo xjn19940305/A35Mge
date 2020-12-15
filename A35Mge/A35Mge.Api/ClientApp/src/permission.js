@@ -10,7 +10,7 @@ import { i18nRender } from '@/locales'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
+const whiteList = ['login', 'register', 'registerResult', 'dashboard'] // no redirect whitelist
 const loginRoutePath = '/user/login'
 const defaultRoutePath = '/dashboard/workplace'
 
@@ -18,23 +18,31 @@ router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`))
   /* has token */
-  if (storage.get(ACCESS_TOKEN)) {
+  var token = storage.get(ACCESS_TOKEN)
+  if (token) {
     if (to.path === loginRoutePath) {
       next({ path: defaultRoutePath })
       NProgress.done()
     } else {
+      if (whiteList.includes(to.path)) {
+        // 在免登录白名单，直接进入
+        next()
+      }
       // check login user.roles is null
-      if (store.getters.roles.length === 0) {
+      var roles = store.getters.roles.length
+      console.log('roleLength', roles)
+      if (roles === 0) {
         // request login userInfo
         store
           .dispatch('GetInfo')
           .then(res => {
-            const roles = res.result && res.result.role
             // generate dynamic router
-            store.dispatch('GenerateRoutes', { roles }).then(() => {
+            store.dispatch('GenerateRoutes').then(() => {
               // 根据roles权限生成可访问的路由表
               // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters)
+              var routes = store.getters.addRouters
+              console.log(routes)
+              router.addRoutes(routes)
               // 请求带有 redirect 重定向时，登录自动重定向到该地址
               const redirect = decodeURIComponent(from.query.redirect || to.path)
               if (to.path === redirect) {

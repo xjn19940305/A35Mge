@@ -17,6 +17,13 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
+        <member name="M:A35Mge.Api.Controllers.LanguageController.UpdateTranslate(A35Mge.Database.Entities.Translate)">
+            <summary>
+            修改翻译内容
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
         <member name="M:A35Mge.Api.Controllers.LanguageController.GetLanguageList">
             <summary>
             获取所有的语种
@@ -28,6 +35,19 @@
             根据语种code获取对应翻译内容
             </summary>
             <param name="LanguageCode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:A35Mge.Api.Controllers.MenuController.GetMenuList">
+            <summary>
+            获取所有的菜单列表包含按钮
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:A35Mge.Api.Controllers.MenuController.AddMenu(A35Mge.Database.Entities.Menu)">
+            <summary>
+            新增菜单
+            </summary>
+            <param name="entity"></param>
             <returns></returns>
         </member>
         <member name="M:A35Mge.Api.Controllers.WeatherForecastController.Get">
