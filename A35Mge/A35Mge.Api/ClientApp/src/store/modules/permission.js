@@ -1,14 +1,13 @@
-import { asyncRouterMap, constantRouterMap } from '@/config/router.config'
 import { generatorDynamicRouter } from '@/router/generator-routers'
 const permission = {
   state: {
-    routers: constantRouterMap,
+    routers: [],
     addRouters: []
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
-      state.routers = constantRouterMap.concat(routers)
+      state.routers = routers
     }
   },
   actions: {
@@ -16,7 +15,6 @@ const permission = {
       return new Promise(async resolve => {
         var rs = await generatorDynamicRouter()
         console.log('route', rs)
-        console.log('basicRoute', asyncRouterMap)
         commit('SET_ROUTERS', rs)
         resolve()
       })
