@@ -13,6 +13,7 @@ namespace A35Mge.Database
         public DbSet<LanguageType> LanguageType { get; set; }
         public DbSet<Translate> Translate { get; set; }
         public DbSet<Menu> Menu { get; set; }
+        public DbSet<JobSchedule> JobSchedule { get; set; }
 
         //public DbSet<Client> Client { get; set; }
 

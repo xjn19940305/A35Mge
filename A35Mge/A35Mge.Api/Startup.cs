@@ -1,5 +1,7 @@
 using A35Mge.Api.AtMap;
 using A35Mge.Database;
+using A35Mge.ScheduleTask;
+using A35Mge.ScheduleTask.Job;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,7 +50,11 @@ namespace A35Mge.Api
                  .MigrationsAssembly(System.Reflection.Assembly.Load("A35Mge.MySqlDatabase").FullName)
                  .EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
             }));
-
+            #region quarz注入
+            services
+                .AddAutoMapper(typeof(AutoMapConfig))
+                .AddQuartzService();
+            #endregion
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -70,7 +79,6 @@ namespace A35Mge.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-            services.AddAutoMapper(typeof(AutoMapConfig));
             //允许一个或多个来源可以跨域
             services.AddCors(options =>
             {

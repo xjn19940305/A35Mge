@@ -3,14 +3,16 @@ using System;
 using A35Mge.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace A35Mge.MySqlDatabase.Migrations
 {
     [DbContext(typeof(A35MgeDbContext))]
-    partial class A35MgeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201216075509_AddScheduleTaskTable")]
+    partial class AddScheduleTaskTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,9 +24,6 @@ namespace A35Mge.MySqlDatabase.Migrations
                     b.Property<int>("JobScheduleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<string>("AssemblyName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");

@@ -21,8 +21,4 @@
     <ProjectReference Include="..\A35Mge.Database\A35Mge.Database.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

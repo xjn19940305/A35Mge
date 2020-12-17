@@ -47,7 +47,7 @@ namespace A35Mge.Database.Entities
         /// 是按钮还是菜单 默认是菜单 true为按钮 false 为菜单
         /// </summary>
         public bool IsBtn { get; set; }
-        /// <summary>
+         /// <summary>
         /// 父ID 根目录默认为0
         /// </summary>
         public string ParentId { get; set; }

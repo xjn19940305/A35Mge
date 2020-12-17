@@ -50,6 +50,41 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
+        <member name="M:A35Mge.Api.Controllers.ScheduleTaskController.RunTask(System.Int32)">
+            <summary>
+            指定启动任务
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:A35Mge.Api.Controllers.ScheduleTaskController.StopTask(System.Int32)">
+            <summary>
+            停止调度器
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:A35Mge.Api.Controllers.ScheduleTaskController.PauseTask(System.Int32)">
+            <summary>
+            暂停任务
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:A35Mge.Api.Controllers.ScheduleTaskController.ResumeTask(System.Int32)">
+            <summary>
+            恢复任务
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:A35Mge.Api.Controllers.ScheduleTaskController.DeleteTask(System.Int32)">
+            <summary>
+            删除任务
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
         <member name="M:A35Mge.Api.Controllers.WeatherForecastController.Get">
             <summary>
             Demo Test

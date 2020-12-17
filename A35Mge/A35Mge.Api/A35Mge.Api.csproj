@@ -31,6 +31,7 @@
     <ProjectReference Include="..\A35Mge.Database\A35Mge.Database.csproj" />
     <ProjectReference Include="..\A35Mge.Model\A35Mge.Model.csproj" />
     <ProjectReference Include="..\A35Mge.MySqlDatabase\A35Mge.MySqlDatabase.csproj" />
+    <ProjectReference Include="..\A35Mge.ScheduleTask\A35Mge.ScheduleTask.csproj" />
   </ItemGroup>
 
   <ItemGroup>

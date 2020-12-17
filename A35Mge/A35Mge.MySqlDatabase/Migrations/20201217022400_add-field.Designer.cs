@@ -3,14 +3,16 @@ using System;
 using A35Mge.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace A35Mge.MySqlDatabase.Migrations
 {
     [DbContext(typeof(A35MgeDbContext))]
-    partial class A35MgeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201217022400_add-field")]
+    partial class addfield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
