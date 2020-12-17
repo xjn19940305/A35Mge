@@ -34,22 +34,11 @@ namespace A35Mge.ScheduleTask
         public async Task StartTask(JobScheduleDTO Schedule)
         {
             var t = Assembly.GetExecutingAssembly();
-            var type = t.GetType($"{t.GetName().Name}.Job.{Schedule.AssemblyName}");
-            Schedule.JobType = type;
+            Schedule.JobType = t.GetType($"{t.GetName().Name}.Job.{Schedule.AssemblyName}");
             var Scheduler = await schedulerFactory.GetScheduler();
             Scheduler.JobFactory = jobFactory;
-            var jobData = new JobDataMap();
-            jobData.Add("JSON", Schedule?.Params ?? string.Empty);
-            var job = CreateJob(Schedule, jobData);
-            ITrigger trigger;
-            // 触发器时间
-            if (Schedule.TriggerType == 0)
-                trigger = CreateTrigger(Schedule);
-            else if (Schedule.TriggerType == 2)
-                trigger = CreateStartAtTrigger(Schedule);
-            else
-                trigger = CreateTrigger(Schedule);
-            await Scheduler.ScheduleJob(job, trigger);
+            var jobData = new JobDataMap { new KeyValuePair<string, object>("JSON", Schedule?.Params ?? string.Empty) };
+            await Scheduler.ScheduleJob(CreateJob(Schedule, jobData), CreateTrigger(Schedule));
             await Scheduler.Start();
         }
         /// <summary>
@@ -106,20 +95,17 @@ namespace A35Mge.ScheduleTask
 
         private static ITrigger CreateTrigger(JobScheduleDTO schedule)
         {
-            return TriggerBuilder
+            var trig = TriggerBuilder
                 .Create()
-                .WithIdentity($"{schedule.JobName}.trigger")
-                .WithCronSchedule(schedule.CronExpression)
-                .WithDescription(schedule.CronExpression)
-                .Build();
-        }
-        private static ITrigger CreateStartAtTrigger(JobScheduleDTO schedule)
-        {
-            return TriggerBuilder
-                .Create()
-                .WithIdentity($"{schedule.JobName}.trigger")
-                .StartAt(DateTimeOffset.Parse(schedule.StartNow.ToString()))
-                .Build();
+                .WithIdentity($"{schedule.JobName}.trigger");
+            //判断是用 cron触发器还是simple
+            //目前simple只支持立即执行以后还可以扩展
+            if (schedule.TriggerType == TriggerType.Cron)
+                trig.WithCronSchedule(schedule.CronExpression);
+            else if (schedule.TriggerType == TriggerType.Simple)
+                trig.StartAt(DateTimeOffset.Parse(schedule.StartNow.ToString()));
+
+            return trig.Build();
         }
     }
 }

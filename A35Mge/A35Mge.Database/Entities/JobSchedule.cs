@@ -24,9 +24,10 @@ namespace A35Mge.Database.Entities
         public string CronExpression { get; set; }
         /// <summary>
         /// 根据cron或者轮询或指定时间执行
-        /// 0 cron 1轮询 2定时执行
+        /// 0:cron触发器 1:Simple
         /// </summary>
-        public int TriggerType { get; set; }
+        public TriggerType TriggerType { get; set; }
+
         /// <summary>
         /// 0:秒级别轮询 1:分钟级别轮询 2:小时级别轮询
         /// </summary>
@@ -44,7 +45,20 @@ namespace A35Mge.Database.Entities
         /// </summary>
         public JobStatus JobStatu { get; set; } = JobStatus.Init;
     }
-
+    public enum TriggerType
+    {
+        [Description("Cron触发器")]
+        Cron = 0,
+        [Description("Simple触发器")]
+        Simple = 1
+    }
+    public enum SimpleTriggerType
+    {
+        [Description("指定时间开始触发,不重复")]
+        StartNow = 0,
+        [Description("立即触发,每多少分钟执行一次")]
+        StartRepeat = 1
+    }
     /// <summary>
     /// Job运行状态
     /// </summary>

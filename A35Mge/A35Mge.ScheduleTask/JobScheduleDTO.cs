@@ -33,13 +33,13 @@ namespace A35Mge.ScheduleTask
         public string CronExpression { get; set; }
         /// <summary>
         /// 根据cron或者轮询或指定时间执行
-        /// 0 cron 1轮询 2定时执行
+        /// 0:cron触发器 1:Simple
         /// </summary>
-        public int TriggerType { get; set; }
+        public TriggerType TriggerType { get; set; }
         /// <summary>
         /// 0:秒级别轮询 1:分钟级别轮询 2:小时级别轮询
         /// </summary>
-        public int LoopType { get; set; }
+        public int? LoopType { get; set; }
         /// <summary>
         /// 参数
         /// </summary>
@@ -47,7 +47,7 @@ namespace A35Mge.ScheduleTask
         /// <summary>
         /// 定时执行的时间
         /// </summary>
-        public DateTime StartNow { get; set; }
+        public DateTime? StartNow { get; set; }
         /// <summary>
         /// Job状态
         /// </summary>

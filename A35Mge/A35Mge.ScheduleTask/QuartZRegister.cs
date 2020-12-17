@@ -12,7 +12,7 @@ namespace A35Mge.ScheduleTask
     public static class QuartZRegister
     {
         public static IServiceCollection AddQuartzService(this IServiceCollection services)
-        {
+         {
             //添加Quartz服务
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
