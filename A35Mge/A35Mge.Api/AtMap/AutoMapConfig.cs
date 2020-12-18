@@ -1,12 +1,8 @@
 ﻿using A35Mge.Database.Entities;
+using A35Mge.Model;
 using A35Mge.Model.LanguageDTO;
 using A35Mge.Model.Permission;
-using A35Mge.ScheduleTask;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace A35Mge.Api.AtMap
 {

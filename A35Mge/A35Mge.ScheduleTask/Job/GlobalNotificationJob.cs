@@ -1,5 +1,7 @@
 ﻿using A35Mge.Database;
 using A35Mge.Database.Entities;
+using A35Mge.Enum;
+using A35Mge.Model;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,20 +42,20 @@ namespace A35Mge.ScheduleTask.Job
         {
             using (var scope = _provider.CreateScope())
             {
-                await Task.Delay(100);
-                var a35MgeDbContext = scope.ServiceProvider.GetService<A35MgeDbContext>();
-                var TaskList = await a35MgeDbContext.JobSchedule.ToListAsync();
-                logger.LogInformation($"{DateTime.UtcNow} 当前初始化队列任务:{TaskList.Count(x => x.JobStatu == Database.Entities.JobStatus.Init)}");
-                logger.LogInformation($"{DateTime.UtcNow} 当前正在执行队列任务:{TaskList.Count(x => x.JobStatu == Database.Entities.JobStatus.Running)}");
-                logger.LogInformation($"{DateTime.UtcNow} 当前已完成队列任务:{TaskList.Count(x => x.JobStatu == Database.Entities.JobStatus.Complete)}");
-                var InitList = TaskList.Where(x => x.JobStatu == Database.Entities.JobStatus.Init).ToList();
-                foreach(var x in InitList)
+                var DbContext = scope.ServiceProvider.GetService<A35MgeDbContext>();
+                var TaskList = await DbContext.JobSchedule.ToListAsync();
+                logger.LogInformation($"{DateTime.UtcNow} 当前初始化队列任务:{TaskList.Count(x => x.JobStatu == JobStatus.Init)}");
+                logger.LogInformation($"{DateTime.UtcNow} 等待执行队列任务:{TaskList.Count(x => x.JobStatu == JobStatus.Wait)}");
+                logger.LogInformation($"{DateTime.UtcNow} 正在执行队列任务:{TaskList.Count(x => x.JobStatu == JobStatus.Running)}");
+                logger.LogInformation($"{DateTime.UtcNow} 已完成队列任务:{TaskList.Count(x => x.JobStatu == JobStatus.Complete)}");
+                var InitList = TaskList.Where(x => x.JobStatu == JobStatus.Init).ToList();
+                foreach (var x in InitList)
                 {
                     var model = mapper.Map<JobSchedule, JobScheduleDTO>(x);
                     // 启动任务
                     await scheduleService.StartTask(model);
-                    x.JobStatu = Database.Entities.JobStatus.Running;
-                    await a35MgeDbContext.SaveChangesAsync();
+                    x.JobStatu = JobStatus.Wait;
+                    await DbContext.SaveChangesAsync();
                 }
 
             }

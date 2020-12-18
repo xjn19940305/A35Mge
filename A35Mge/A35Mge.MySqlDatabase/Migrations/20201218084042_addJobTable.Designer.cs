@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace A35Mge.MySqlDatabase.Migrations
 {
     [DbContext(typeof(A35MgeDbContext))]
-    [Migration("20201216075509_AddScheduleTaskTable")]
-    partial class AddScheduleTaskTable
+    [Migration("20201218084042_addJobTable")]
+    partial class addJobTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,9 +21,12 @@ namespace A35Mge.MySqlDatabase.Migrations
 
             modelBuilder.Entity("A35Mge.Database.Entities.JobSchedule", b =>
                 {
-                    b.Property<int>("JobScheduleId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("AssemblyName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -37,8 +40,17 @@ namespace A35Mge.MySqlDatabase.Migrations
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<bool>("IsDelete")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("JobId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("JobName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -46,7 +58,7 @@ namespace A35Mge.MySqlDatabase.Migrations
                     b.Property<int>("JobStatu")
                         .HasColumnType("int");
 
-                    b.Property<int>("LoopType")
+                    b.Property<int?>("LoopType")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ModifyDate")
@@ -55,13 +67,13 @@ namespace A35Mge.MySqlDatabase.Migrations
                     b.Property<string>("Params")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<DateTime>("StartNow")
+                    b.Property<DateTime?>("StartNow")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("TriggerType")
                         .HasColumnType("int");
 
-                    b.HasKey("JobScheduleId");
+                    b.HasKey("Id");
 
                     b.ToTable("JobSchedule");
                 });

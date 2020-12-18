@@ -1,4 +1,6 @@
 ﻿using A35Mge.Database;
+using A35Mge.Enum;
+using A35Mge.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -54,10 +56,10 @@ namespace A35Mge.ScheduleTask
             using (var scope = _provider.CreateScope())
             {
                 await Task.Delay(100);
-                var a35MgeDbContext = scope.ServiceProvider.GetService<A35MgeDbContext>();
-                var TaskList = await a35MgeDbContext.JobSchedule.Where(x => x.JobStatu == Database.Entities.JobStatus.Running).ToListAsync();
-                TaskList.ForEach(x => x.JobStatu = Database.Entities.JobStatus.Init);
-                await a35MgeDbContext.SaveChangesAsync();
+                var DbContext = scope.ServiceProvider.GetService<A35MgeDbContext>();
+                var TaskList = await DbContext.JobSchedule.Where(x => x.JobStatu == JobStatus.Running || x.JobStatu == JobStatus.Wait).ToListAsync();
+                TaskList.ForEach(x => x.JobStatu = JobStatus.Init);
+                await DbContext.SaveChangesAsync();
                 logger.LogInformation($"全局调度任务结束!");
             }
         }

@@ -1,32 +1,34 @@
-﻿using A35Mge.Database.Entities;
+﻿using A35Mge.Enum;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
 using System.Threading;
 
-namespace A35Mge.ScheduleTask
+namespace A35Mge.Model
 {
-    /// <summary>
-    /// Job调度中间对象
-    /// </summary>
     public class JobScheduleDTO
     {
-        public JobScheduleDTO()
-        {
-        }
         /// <summary>
         /// Job类型
         /// </summary>
         public Type JobType { get; set; }
 
         public CancellationToken CancelToken { get; set; }
-        public int JobScheduleId { get; set; }
+        public int Id { get; set; }
+        public string JobId { get; set; }
         /// <summary>
         /// 对应的程序集名字
         /// </summary>
         public string AssemblyName { get; set; }
         public string JobName { get; set; }
+        /// <summary>
+        /// 任务描述
+        /// </summary>
+        public string Description { get; set; }
+        /// <summary>
+        /// 发生错误时的报错
+        /// </summary>
+        public string ErrorMessage { get; set; }
         /// <summary>
         /// Cron表达式
         /// </summary>

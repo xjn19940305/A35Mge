@@ -1,5 +1,6 @@
 using A35Mge.Api.AtMap;
 using A35Mge.Database;
+using A35Mge.Dependency;
 using A35Mge.ScheduleTask;
 using A35Mge.ScheduleTask.Job;
 using AutoMapper;
