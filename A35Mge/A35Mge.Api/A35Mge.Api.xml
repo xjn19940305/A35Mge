@@ -50,6 +50,20 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
+        <member name="M:A35Mge.Api.Controllers.MenuController.Update(A35Mge.Database.Entities.Menu)">
+            <summary>
+            修改菜单
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:A35Mge.Api.Controllers.MenuController.Delete(System.String)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="Id"></param>
+            <returns></returns>
+        </member>
         <member name="M:A35Mge.Api.Controllers.WeatherForecastController.Get">
             <summary>
             Demo Test

@@ -51,11 +51,10 @@ namespace A35Mge.Api
                  .MigrationsAssembly(System.Reflection.Assembly.Load("A35Mge.MySqlDatabase").FullName)
                  .EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
             }));
-            #region quarz×¢Èë
             services
                 .AddAutoMapper(typeof(AutoMapConfig))
+                .AddA35Service()
                 .AddQuartzService();
-            #endregion
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo

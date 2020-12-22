@@ -2,6 +2,7 @@
 using A35Mge.Database.Entities;
 using A35Mge.Model;
 using A35Mge.Model.LanguageDTO;
+using A35Mge.Service.Interface;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,16 +20,13 @@ namespace A35Mge.Api.Controllers
     [ApiController]
     public class LanguageController : ControllerBase
     {
-        private readonly A35MgeDbContext a35MgeDbContext;
-        private readonly IMapper mapper;
+        private readonly ILanguageService languageService;
 
         public LanguageController(
-            A35MgeDbContext a35MgeDbContext,
-            IMapper mapper
+            ILanguageService languageService
             )
         {
-            this.a35MgeDbContext = a35MgeDbContext;
-            this.mapper = mapper;
+            this.languageService = languageService;
         }
 
         /// <summary>
@@ -39,8 +37,7 @@ namespace A35Mge.Api.Controllers
         [ProducesResponseType(typeof(ErrorResultModel), StatusCodes.Status400BadRequest), AllowAnonymous]
         public async Task<IActionResult> AddLanguageType([FromBody] LanguageType entity)
         {
-            await a35MgeDbContext.AddAsync(entity);
-            await a35MgeDbContext.SaveChangesAsync();
+            await languageService.AddLanguageType(entity);
             return Ok();
         }
         /// <summary>
@@ -52,8 +49,7 @@ namespace A35Mge.Api.Controllers
         [ProducesResponseType(typeof(ErrorResultModel), StatusCodes.Status400BadRequest), AllowAnonymous]
         public async Task<IActionResult> AddTranslate([FromBody] Translate entity)
         {
-            await a35MgeDbContext.AddAsync(entity);
-            await a35MgeDbContext.SaveChangesAsync();
+            await languageService.AddTranslate(entity);
             return Ok();
         }
         /// <summary>
@@ -65,11 +61,7 @@ namespace A35Mge.Api.Controllers
         [ProducesResponseType(typeof(ErrorResultModel), StatusCodes.Status400BadRequest), AllowAnonymous]
         public async Task<IActionResult> UpdateTranslate([FromBody] Translate entity)
         {
-            var data = await a35MgeDbContext.Translate
-                .FirstOrDefaultAsync(x => x.TranslateId == entity.TranslateId && x.TranslateCode == entity.TranslateCode);
-            data.TranslateContent = entity.TranslateContent;
-            data.ModifyDate = DateTime.Now;
-            await a35MgeDbContext.SaveChangesAsync();
+            await languageService.UpdateTranslate(entity);
             return Ok();
         }
 
@@ -81,8 +73,7 @@ namespace A35Mge.Api.Controllers
         [ProducesResponseType(typeof(ErrorResultModel), StatusCodes.Status400BadRequest), AllowAnonymous]
         public async Task<IActionResult> GetLanguageList()
         {
-            var data = await a35MgeDbContext.LanguageType
-               .ToListAsync();
+            var data = await languageService.GetLanguageTypeList();
             return Ok(data);
         }
 
@@ -95,10 +86,8 @@ namespace A35Mge.Api.Controllers
         [ProducesResponseType(typeof(ErrorResultModel), StatusCodes.Status400BadRequest), AllowAnonymous]
         public async Task<IActionResult> GetTranslateFromLanguage([FromRoute] string LanguageCode)
         {
-            var data = await a35MgeDbContext.LanguageType
-                .Include(x => x.TranslateList)
-                .FirstOrDefaultAsync(x => x.LanguageCode.Equals(LanguageCode, StringComparison.OrdinalIgnoreCase));
-            return Ok(mapper.ProjectTo<LanDTO>(data.TranslateList.AsQueryable()));
+            var data = await languageService.GetTranslateFromLanguage(LanguageCode);
+            return Ok(data);
         }
     }
 }

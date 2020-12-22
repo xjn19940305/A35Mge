@@ -1,7 +1,10 @@
 ﻿using A35Mge.Model;
 using A35Mge.ScheduleTask;
 using A35Mge.ScheduleTask.Job;
+using A35Mge.Service.Implement;
+using A35Mge.Service.Interface;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
@@ -13,6 +16,12 @@ namespace A35Mge.Dependency
 {
     public static class AllExtension
     {
+        public static IServiceCollection AddA35Service(this IServiceCollection services)
+        {
+            services.TryAddScoped<ILanguageService, LanguageService>();
+            services.TryAddScoped<IMenuService, MenuService>();
+            return services;
+        }
         public static IServiceCollection AddQuartzService(this IServiceCollection services)
         {
             //添加Quartz服务

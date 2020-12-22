@@ -1,6 +1,7 @@
 ﻿using A35Mge.Database;
 using A35Mge.Database.Entities;
 using A35Mge.Model.Permission;
+using A35Mge.Service.Interface;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,16 +18,13 @@ namespace A35Mge.Api.Controllers
     [ApiController]
     public class MenuController : ControllerBase
     {
-        private readonly A35MgeDbContext a35MgeDbContext;
-        private readonly IMapper mapper;
+        private readonly IMenuService menuService;
 
         public MenuController(
-             A35MgeDbContext a35MgeDbContext,
-             IMapper mapper
+             IMenuService menuService
             )
         {
-            this.a35MgeDbContext = a35MgeDbContext;
-            this.mapper = mapper;
+            this.menuService = menuService;
         }
         /// <summary>
         /// 获取所有的菜单列表包含按钮
@@ -35,15 +33,7 @@ namespace A35Mge.Api.Controllers
         [HttpGet]
         public async Task<List<MenuDTO>> GetMenuList()
         {
-            var list = await a35MgeDbContext.Menu.OrderBy(x => x.Sort).ToListAsync();
-            var menuList = new List<MenuDTO>();
-            foreach (var item in list)
-            {
-                var entity = mapper.Map<Menu, MenuDTO>(item);
-                var entityMeta = mapper.Map<Menu, MetaModel>(item);
-                entity.meta = entityMeta;
-                menuList.Add(entity);
-            }
+            var menuList = await menuService.GetMenuList();
             return menuList;
         }
         /// <summary>
@@ -54,9 +44,30 @@ namespace A35Mge.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMenu(Menu entity)
         {
-            await a35MgeDbContext.AddAsync(entity);
-            await a35MgeDbContext.SaveChangesAsync();
+            await menuService.Add(entity);
             return Ok("添加成功");
+        }
+        /// <summary>
+        /// 修改菜单
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public async Task<IActionResult> Update(Menu entity)
+        {
+            await menuService.Update(entity);
+            return Ok("修改成功");
+        }
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+       [HttpGet]
+        public async Task<IActionResult> Delete (string Id)
+        {
+            await menuService.Delete(Id);
+            return Ok("删除成功");
         }
     }
 }

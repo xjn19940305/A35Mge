@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Implement\" />
+    <ProjectReference Include="..\A35Mge.Database\A35Mge.Database.csproj" />
+    <ProjectReference Include="..\A35Mge.Enum\A35Mge.Enum.csproj" />
+    <ProjectReference Include="..\A35Mge.Infrastructure\A35Mge.Infrastructure.csproj" />
+    <ProjectReference Include="..\A35Mge.Model\A35Mge.Model.csproj" />
   </ItemGroup>
 
 </Project>
