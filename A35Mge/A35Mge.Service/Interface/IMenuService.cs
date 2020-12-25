@@ -19,18 +19,24 @@ namespace A35Mge.Service.Interface
         /// </summary>
         /// <param name="menu"></param>
         /// <returns></returns>
-        public Task Add(Menu menu);
+        public Task Add(MenuRequestDTO menu);
         /// <summary>
         /// 更新菜单
         /// </summary>
         /// <param name="menu"></param>
         /// <returns></returns>
-        public Task Update(Menu menu);
+        public Task Update(MenuRequestDTO menu);
         /// <summary>
         /// 删除菜单
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
         public Task Delete(string menuId);
+        /// <summary>
+        /// 根据菜单ID获取详细的菜单信息
+        /// </summary>
+        /// <param name="MenuId"></param>
+        /// <returns></returns>
+        public Task<MenuRequestDTO> Get(string MenuId);
     }
 }

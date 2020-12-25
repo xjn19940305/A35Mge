@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.Api", "A35Mge.Api\A35Mge.Api.csproj", "{3ED6F268-E358-4A3A-9EDC-EA2DB672AD8E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{E6F50EA5-D6B0-460A-9AD9-BB9D70EC4D82}"
-	ProjectSection(SolutionItems) = preProject
-		A35Mge.IDS\WeatherForecast.cs = A35Mge.IDS\WeatherForecast.cs
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.Database", "A35Mge.Database\A35Mge.Database.csproj", "{1212989F-5144-4AF7-A08F-C6779742D0B4}"
 EndProject
@@ -30,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.ScheduleTask", "A35M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.Service", "A35Mge.Service\A35Mge.Service.csproj", "{75AA50A1-0E84-4C36-9050-AF142F548163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.Enum", "A35Mge.Enum\A35Mge.Enum.csproj", "{A64C9F77-02A1-4798-809C-11AC7C271E81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.Enum", "A35Mge.Enum\A35Mge.Enum.csproj", "{A64C9F77-02A1-4798-809C-11AC7C271E81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A35Mge.Dependency", "A35Mge.Dependency\A35Mge.Dependency.csproj", "{FAA9E60C-3057-4E30-807B-739D8CF31B29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "A35Mge.Dependency", "A35Mge.Dependency\A35Mge.Dependency.csproj", "{FAA9E60C-3057-4E30-807B-739D8CF31B29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

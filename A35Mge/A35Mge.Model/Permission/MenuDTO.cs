@@ -9,6 +9,7 @@ namespace A35Mge.Model.Permission
         public string id { get; set; }
 
         public string path { get; set; }
+        public string Description { get; set; }
 
         public string name { get; set; }
 

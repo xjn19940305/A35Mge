@@ -20,6 +20,9 @@ namespace A35Mge.Api.AtMap
             .ForMember(x => x.id, b => b.MapFrom(x => x.MenuId))
             .ReverseMap();
 
+            CreateMap<Menu, MenuRequestDTO>()
+         .ReverseMap();
+
             CreateMap<LanguageType, LanguageTypeDTO>()
                 .ForMember(x => x.Code, b => b.MapFrom(x => x.LanguageCode))
                 .ForMember(x => x.Description, b => b.MapFrom(x => x.Description))

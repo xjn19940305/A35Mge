@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\A35Mge.Database\A35Mge.Database.csproj" />
     <ProjectReference Include="..\A35Mge.Enum\A35Mge.Enum.csproj" />
     <ProjectReference Include="..\A35Mge.Infrastructure\A35Mge.Infrastructure.csproj" />

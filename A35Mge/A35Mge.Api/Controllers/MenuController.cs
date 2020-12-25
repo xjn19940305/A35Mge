@@ -39,35 +39,47 @@ namespace A35Mge.Api.Controllers
         /// <summary>
         /// 新增菜单
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="DTO"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> AddMenu(Menu entity)
+        public async Task<IActionResult> AddMenu([FromBody] MenuRequestDTO DTO)
         {
-            await menuService.Add(entity);
-            return Ok("添加成功");
+            await menuService.Add(DTO);
+            return Ok();
         }
         /// <summary>
         /// 修改菜单
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="DTO"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Update(Menu entity)
+        public async Task<IActionResult> Update([FromBody] MenuRequestDTO DTO)
         {
-            await menuService.Update(entity);
-            return Ok("修改成功");
+            await menuService.Update(DTO);
+            return Ok();
         }
         /// <summary>
         /// 删除菜单
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-       [HttpGet]
-        public async Task<IActionResult> Delete (string Id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] string Id)
         {
             await menuService.Delete(Id);
-            return Ok("删除成功");
+            return Ok();
         }
+        /// <summary>
+        /// 获取某个菜单
+        /// </summary>
+        /// <param name="MenuId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] string MenuId)
+        {
+            var res = await menuService.Get(MenuId);
+            return Ok(res);
+        }
+
     }
 }

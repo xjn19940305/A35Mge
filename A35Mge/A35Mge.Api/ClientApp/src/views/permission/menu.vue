@@ -17,8 +17,8 @@
         <a-table-column key="component" data-index="component" :title="$t('Menu_Component')" />
         <a-table-column key="description" data-index="description" :title="$t('Description')" />
         <a-table-column key="sort" data-index="sort" :title="$t('Sort')" />
-        <a-table-column key="icon" data-index="icon" :title="$t('Menu_Icon')" />
-        <a-table-column key="IsBtn" data-index="IsBtn" :title="$t('Menu_IsBtn')">
+        <a-table-column key="icon" data-index="icon" :title="$t('Icon')" />
+        <a-table-column key="IsBtn" data-index="IsBtn" :title="$t('IsBtn')">
           <template slot-scope="text, record">
             <span>
               <p v-if="record.IsBtn">Button</p>
@@ -34,8 +34,6 @@
               <a-popconfirm :title="$t('public_msg_confirmDelete')" @confirm="() => Delete(record.id)">
                 <a href="javascript:;">{{ $t('Public_Delete') }}</a>
               </a-popconfirm>
-              <a-divider type="vertical" />
-              <a @click="$router.push({ path: `/codealloc/Detail?id=${record.id}` })">明细</a>
             </span>
           </template>
         </a-table-column>
@@ -56,14 +54,17 @@
               v-decorator="['name', { rules: [{ required: true, max: 50, message: this.$t('REQUIRE') }] }]"
             />
           </a-form-item>
+          <a-form-item :label="$t('Description')">
+            <a-input
+              :placeholder="$t('Description')"
+              v-decorator="['Description', { rules: [{ required: true, max: 50, message: this.$t('REQUIRE') }] }]"
+            />
+          </a-form-item>
           <a-form-item :label="$t('Menu_Path')">
             <a-input :placeholder="$t('Menu_Path')" v-decorator="['Path']" />
           </a-form-item>
           <a-form-item :label="$t('Menu_Component')">
             <a-input :placeholder="$t('Menu_Component')" v-decorator="['Component']" />
-          </a-form-item>
-          <a-form-item :label="$t('Description')">
-            <a-input :placeholder="$t('Description')" v-decorator="['description']" />
           </a-form-item>
           <a-form-item :label="$t('Sort')">
             <a-input :placeholder="$t('Sort')" v-decorator="['Sort']" />
@@ -90,34 +91,13 @@
             </a-tree-select>
           </a-form-item>
           <a-form-item :label="$t('Is_Hide')">
-            <a-select
-              :placeholder="$t('CHOOSEONE')"
-              v-decorator="['hideChildren', { rules: [{ required: true, max: 50, message: this.$t('CHOOSEONE') }] }]"
-            >
-              <a-select-option value=" ">=={{ $t('DEFAULT_SELECT') }}==</a-select-option>
-              <a-select-option value="true">{{ $t('true') }}</a-select-option>
-              <a-select-option value="false">{{ $t('false') }}</a-select-option>
-            </a-select>
+            <a-switch v-model="IsHide" v-decorator="['hideChildren']" />
           </a-form-item>
           <a-form-item :label="$t('Is_HideSelf')">
-            <a-select
-              :placeholder="$t('CHOOSEONE')"
-              v-decorator="['Show', { rules: [{ required: true, max: 50, message: this.$t('CHOOSEONE') }] }]"
-            >
-              <a-select-option value=" ">=={{ $t('DEFAULT_SELECT') }}==</a-select-option>
-              <a-select-option value="true">{{ $t('false') }}</a-select-option>
-              <a-select-option value="false">{{ $t('true') }}</a-select-option>
-            </a-select>
+            <a-switch v-model="IsHideSelf" v-decorator="['Show']" />
           </a-form-item>
-          <a-form-item :label="$t('Menu_Type')">
-            <a-select
-              :placeholder="$t('CHOOSEONE')"
-              v-decorator="['IsBtn', { rules: [{ required: true, max: 50, message: this.$t('CHOOSEONE') }] }]"
-            >
-              <a-select-option value=" ">=={{ $t('DEFAULT_SELECT') }}==</a-select-option>
-              <a-select-option value="false">{{ $t('MENU') }}</a-select-option>
-              <a-select-option value="true">{{ $t('BUTTON') }}</a-select-option>
-            </a-select>
+          <a-form-item :label="$t('IsBtn')">
+            <a-switch v-model="IsBtn" v-decorator="['IsBtn']" />
           </a-form-item>
         </a-form>
       </a-modal>
@@ -130,6 +110,9 @@ import IconSelector from '@/components/IconSelector'
 export default {
   data () {
     return {
+      IsHide: false,
+      IsHideSelf: false,
+      IsBtn: false,
       data: [],
       selectedRowKeys: [],
       form: this.$form.createForm(this),
@@ -145,7 +128,8 @@ export default {
           children: []
         }
       ],
-      IconShow: false
+      IconShow: false,
+      MenuId: ''
     }
   },
   components: {
@@ -210,58 +194,79 @@ export default {
     Add () {
       this.dialogTitle = this.$t('Public_Add')
       this.op = 'add'
+      this.clear()
       this.form.resetFields()
       this.setFormValues({
-        component: 'RouteView'
+        Component: 'RouteView'
       })
       this.show = true
+    },
+    async Delete (id) {
+      await MenuApi.Delete(id)
+      this.$notification.success({
+        message: 'Success',
+        description: 'Delete Success'
+      })
+      this.LoadTable()
+      this.LoadSelectTree()
     },
     // 取消
     handleCancel () {
       this.show = false
       this.form.resetFields()
     },
+    clear () {
+      this.IsHideSelf = this.IsHide = this.IsBtn = false
+      this.MenuId = ''
+    },
     // 新增/修改菜单
     async handleConfirm () {
       this.form.validateFields(async (err, values) => {
         if (!err) {
           console.log('handleConfirm', values)
-          // var res = {}
           if (this.op === 'add') {
-            // res = await AddMenu(values)
-            // if (res.success) {
-            //   this.$notification.success({
-            //     message: 'Success',
-            //     description: 'Save Success'
-            //   })
-            //   this.selectedRowKeys = []
-            //   this.LoadTable()
-            // } else {
-            //   this.$notification.error({
-            //     message: 'Error',
-            //     description: this.$t('ERROR_CODE_1003')
-            //   })
-            // }
+            await MenuApi.Add(values)
+            this.$notification.success({
+              message: 'Success',
+              description: 'Save Success'
+            })
+            this.selectedRowKeys = []
+            this.LoadTable()
           } else {
-            // res = await SaveMenu(values)
-            // if (res.success) {
-            //   this.$notification.success({
-            //     message: 'Success',
-            //     description: 'Save Success'
-            //   })
-            //   this.selectedRowKeys = []
-            //   this.LoadTable()
-            // } else {
-            //   this.$notification.error({
-            //     message: 'Error',
-            //     description: this.$t('ERROR_CODE_1003')
-            //   })
-            // }
+            values.MenuId = this.MenuId
+            await MenuApi.Update(values)
+            this.$notification.success({
+              message: 'Success',
+              description: 'Save Success'
+            })
+            this.selectedRowKeys = []
+            this.LoadTable()
           }
+          await this.LoadSelectTree()
           this.show = false
           this.form.resetFields()
         }
       })
+    },
+    // 修改菜单
+    async Save (id) {
+      this.dialogTitle = this.$t('Public_Update')
+      this.op = 'save'
+      this.clear()
+      this.form.resetFields()
+      this.updateLoading = true
+      try {
+        var t = await MenuApi.Get(id)
+        this.MenuId = t.MenuId
+        this.IsHide = t.hideChildren
+        this.IsHideSelf = t.Show
+        this.IsBtn = t.IsBtn
+      } catch (e) {
+        console.log('error', e)
+        this.updateLoading = false
+      }
+      this.setFormValues(t)
+      this.show = true
     },
     // 设置表单数据
     setFormValues (data) {
@@ -311,7 +316,7 @@ export default {
     },
     handleIconChange (icon) {
       this.setFormValues({
-        icon: icon
+        Icon: icon
       })
       this.IconShow = false
     },

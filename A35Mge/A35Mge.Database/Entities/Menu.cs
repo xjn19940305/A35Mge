@@ -7,6 +7,7 @@ namespace A35Mge.Database.Entities
     public class Menu : EntityBase
     {
         public string MenuId { get; set; }
+        public string Description { get; set; }
         /// <summary>
         /// 路由名称
         /// </summary>

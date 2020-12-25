@@ -25,7 +25,7 @@ const rootRouter = {
   component: 'BasicLayout',
   redirect: '/dashboard',
   meta: {
-    title: '首页'
+    title: 'Index'
   },
   children: []
 }
@@ -82,7 +82,7 @@ export const generator = (routerMap, parent) => {
       }
     }
     // 是否设置了隐藏菜单
-    if (show === false) {
+    if (show) {
       currentRouter.hidden = true
     }
     // 是否设置了隐藏子菜单

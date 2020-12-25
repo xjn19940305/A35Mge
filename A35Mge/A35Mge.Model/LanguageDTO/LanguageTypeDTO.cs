@@ -9,5 +9,7 @@ namespace A35Mge.Model.LanguageDTO
         public int Id { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
+
+        public int Sort { get; set; }
     }
 }

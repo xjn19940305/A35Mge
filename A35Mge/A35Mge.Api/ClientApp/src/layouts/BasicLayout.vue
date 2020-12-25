@@ -1,6 +1,6 @@
 <template>
   <pro-layout
-    :title="title"
+    :title="$t('后台管理系统')"
     :menus="menus"
     :collapsed="collapsed"
     :mediaQuery="query"
@@ -15,7 +15,7 @@
       广告代码 真实项目中请移除
       production remove this Ads
     -->
-    <ads v-if="isProPreviewSite && !collapsed"/>
+    <ads v-if="isProPreviewSite && !collapsed" />
     <!-- Ads end -->
 
     <!-- <setting-drawer :settings="settings" @change="handleSettingChange" /> -->
@@ -59,7 +59,6 @@ export default {
       menus: [],
       // 侧栏收起状态
       collapsed: false,
-      title: defaultSettings.title,
       settings: {
         // 布局类型
         layout: defaultSettings.layout, // 'sidemenu', 'topmenu'
@@ -157,5 +156,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "./BasicLayout.less";
+@import './BasicLayout.less';
 </style>

@@ -3,6 +3,7 @@ using A35Mge.Database;
 using A35Mge.Dependency;
 using A35Mge.ScheduleTask;
 using A35Mge.ScheduleTask.Job;
+using A35Mge.Service.GlobalException;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,22 +36,40 @@ namespace A35Mge.Api
         }
 
         public IConfiguration Configuration { get; }
-
+        public static readonly ILoggerFactory MyLoggerFactory
+                = LoggerFactory.Create(builder =>
+                {
+                #if DEBUG
+                    builder.AddConsole();
+                #endif
+                });
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-            });
+            services.AddControllers(o =>
+                {
+                    o.Filters.Add(typeof(CustomeExceptionFilter));
+                })
+                .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+                        //options.SerializerSettings.DateFormatHandling = Newtonsoft.Json.DateFormatHandling.IsoDateFormat;
+                        //options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                        //options.SerializerSettings.DateParseHandling = Newtonsoft.Json.DateParseHandling.DateTime;
+                    });
+            //.AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            //});
             var config = Configuration.GetSection("Connection");
-            services.AddDbContext<A35MgeDbContext>(options => options.UseMySql(config?.Value ?? string.Empty, mysql =>
+
+            services.AddDbContext<A35MgeDbContext>(
+                options => options.UseMySql(config?.Value ?? string.Empty, mysql =>
             {
                 var builder = mysql
                  .MigrationsAssembly(System.Reflection.Assembly.Load("A35Mge.MySqlDatabase").FullName)
                  .EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
-            }));
+            }).UseLoggerFactory(MyLoggerFactory));
             services
                 .AddAutoMapper(typeof(AutoMapConfig))
                 .AddA35Service()

@@ -25,9 +25,13 @@ namespace A35Mge.Service.Implement
             this.a35Mgedbcontext = a35Mgedbcontext;
             this.mapper = mapper;
         }
-        public async Task Add(Menu menu)
+        public async Task Add(MenuRequestDTO menu)
         {
-            await a35Mgedbcontext.AddAsync(menu);
+            var entity = mapper.Map<Menu>(menu);
+            entity.MenuId = Guid.NewGuid().ToString();
+            entity.keepAlive = true;
+            entity.Target = string.Empty;
+            await a35Mgedbcontext.AddAsync(entity);
             await a35Mgedbcontext.SaveChangesAsync();
         }
 
@@ -38,7 +42,13 @@ namespace A35Mge.Service.Implement
             await a35Mgedbcontext.SaveChangesAsync();
         }
 
-        public async  Task<List<MenuDTO>> GetMenuList()
+        public async Task<MenuRequestDTO> Get(string MenuId)
+        {
+            var data = mapper.Map<MenuRequestDTO>(await a35Mgedbcontext.Menu.FirstOrDefaultAsync(x => x.MenuId == MenuId));
+            return data;
+        }
+
+        public async Task<List<MenuDTO>> GetMenuList()
         {
             var list = await a35Mgedbcontext.Menu.OrderBy(x => x.Sort).ToListAsync();
             var menuList = new List<MenuDTO>();
@@ -52,9 +62,14 @@ namespace A35Mge.Service.Implement
             return menuList;
         }
 
-        public async Task Update(Menu menu)
+        public async Task Update(MenuRequestDTO menu)
         {
-            await a35Mgedbcontext.AddAsync(menu);
+            var data = await a35Mgedbcontext.Menu.FirstOrDefaultAsync(x => x.MenuId == menu.MenuId);
+            if (data == null)
+                throw new Exception("修改的菜单不存在!");
+            var entity = mapper.Map(menu, data);
+            entity.ModifyDate = DateTime.Now;
+            a35Mgedbcontext.Update(entity);
             await a35Mgedbcontext.SaveChangesAsync();
         }
     }
