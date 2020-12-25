@@ -101,7 +101,6 @@ Vue.use(Statistic)
 Vue.use(Descriptions)
 Vue.use(TreeSelect)
 Vue.use(Tree)
-
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message
 Vue.prototype.$notification = notification

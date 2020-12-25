@@ -6,7 +6,7 @@
         <a-icon type="global" :style="{ fontSize: '16px' }" />
       </span>
       <a-menu slot="overlay" @click="changeLang">
-        <a-menu-item v-for="item in langList" :key="item.LanguageCode">{{ item.Description }}</a-menu-item>
+        <a-menu-item v-for="item in langList" :key="item.Code">{{ item.Description }}</a-menu-item>
       </a-menu>
     </a-dropdown>
   </div>

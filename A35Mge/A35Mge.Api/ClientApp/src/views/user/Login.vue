@@ -270,17 +270,6 @@ export default {
     },
     loginSuccess (res) {
       console.log(res)
-      // check res.homePage define, set $router.push name res.homePage
-      // Why not enter onComplete
-      /*
-      this.$router.push({ name: 'analysis' }, () => {
-        console.log('onComplete')
-        this.$notification.success({
-          message: '欢迎',
-          description: `${timeFix()}，欢迎回来`
-        })
-      })
-      */
       var dt = new Date()
       fetch('/config.json?t=' + dt.getTime())
         .then(response => response.json())

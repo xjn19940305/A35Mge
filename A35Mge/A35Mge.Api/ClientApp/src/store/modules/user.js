@@ -1,4 +1,5 @@
 import storage from 'store'
+import { logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
@@ -57,12 +58,18 @@ const user = {
     // 登出
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
-        storage.remove(ACCESS_TOKEN)
-        resolve()
+        logout(state.token).then(() => {
+          resolve()
+        }).catch(() => {
+          resolve()
+        }).finally(() => {
+          commit('SET_TOKEN', '')
+          commit('SET_ROLES', [])
+          storage.remove(ACCESS_TOKEN)
+        })
       })
     }
+
   }
 }
 
