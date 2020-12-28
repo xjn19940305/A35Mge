@@ -18,6 +18,7 @@ namespace A35Mge.Api.Controllers
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "manager")]
     public class LanguageController : ControllerBase
     {
         private readonly ILanguageService languageService;

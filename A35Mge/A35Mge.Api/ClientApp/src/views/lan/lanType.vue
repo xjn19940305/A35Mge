@@ -23,15 +23,6 @@
       </div>
       <a-form layout="inline">
         <a-button type="primary" style="margin-bottom: 10px" @click="Add()">{{ $t('Public_Add') }}</a-button>
-        <a-button
-          :disabled="deleteDisable"
-          type="danger"
-          style="margin-left: 15px"
-          @click="Delete()"
-          :loading="deleteLoading"
-        >
-          {{ $t('Public_Delete') }}</a-button
-        >
       </a-form>
       <a-table :row-key="(record) => record.Id" :data-source="data" :loading="loading" :row-selection="rowSelection">
         <a-table-column key="Code" data-index="Code" :title="$t('Lan_Code')" />
@@ -89,11 +80,9 @@ export default {
       loading: false,
       show: false,
       form: this.$form.createForm(this),
-      deleteLoading: false,
       dialogTitle: '',
       CodeReadOnly: true,
-      selectedRowKeys: [],
-      deleteDisable: true
+      selectedRowKeys: []
     }
   },
   mounted () {
@@ -111,7 +100,6 @@ export default {
     // 多选的方法
     onSelectChange (selectedRowKeys) {
       console.log(selectedRowKeys)
-      selectedRowKeys.length > 0 ? this.deleteDisable = false : this.deleteDisable = true
       this.selectedRowKeys = selectedRowKeys
     },
     QueryTable () {
@@ -149,17 +137,6 @@ export default {
           this.form.resetFields()
         }
       })
-    },
-    async Delete (id) {
-      this.deleteLoading = true
-      await languageApi.DeleteLanType(id)
-      this.$notification.success({
-        message: this.$t('Notiication'),
-        description: this.$t('DeleteOk')
-      })
-      this.selectedRowKeys = []
-      this.fetch()
-      this.deleteLoading = false
     },
     // 设置表单数据
     setFormValues (data) {

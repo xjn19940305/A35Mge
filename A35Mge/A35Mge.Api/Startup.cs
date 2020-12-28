@@ -39,9 +39,9 @@ namespace A35Mge.Api
         public static readonly ILoggerFactory MyLoggerFactory
                 = LoggerFactory.Create(builder =>
                 {
-                #if DEBUG
+#if DEBUG
                     builder.AddConsole();
-                #endif
+#endif
                 });
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -71,28 +71,26 @@ namespace A35Mge.Api
                  .EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
             }).UseLoggerFactory(MyLoggerFactory));
             services
-                .AddAutoMapper(typeof(AutoMapConfig))
+                .AddAutoMapper(
+                Assembly.Load("A35Mge.Api"),
+                Assembly.Load("A35Mge.Service"))
                 .AddA35Service()
                 .AddQuartzService();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("manager", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "A35Mge Web API",
-                    Description = "A35Mge Web Api",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "A35Mge Contact",
-                        Email = string.Empty,
-                        Url = new Uri("https://example.com/license"),
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "A35Mge License",
-                        Url = new Uri("https://example.com/license"),
-                    }
+                    Title = "Manager Web Api",
+                    Description = "Manager Web Api",
+                    TermsOfService = new Uri("https://example.com/terms")
+                });
+                c.SwaggerDoc("front", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Front Web Api",
+                    Description = "Front Web Api",
+                    TermsOfService = new Uri("https://example.com/terms")
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -133,10 +131,15 @@ namespace A35Mge.Api
 
             app.UseAuthorization();
             app.UseCors("CustomCorsPolicy");
-            app.UseSwagger();
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "swagger/{documentName}/swagger.json";
+                //c.SerializeAsV2 = true;
+            });
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "A35Mge V1");
+                c.SwaggerEndpoint("/swagger/manager/swagger.json", "Manager");
+                c.SwaggerEndpoint("/swagger/front/swagger.json", "Front");
                 c.RoutePrefix = string.Empty;
             });
 

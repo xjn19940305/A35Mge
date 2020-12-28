@@ -2,10 +2,31 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace A35Mge.Database.Entities
+namespace A35Mge.Model.ExportModel
 {
-    public class Menu : EntityBase
+    public class MenuExport 
     {
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime CreateDate { get; set; }
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public DateTime? ModifyDate { get; set; }
+        /// <summary>
+        /// 删除时间
+        /// </summary>
+        public DateTime? DeleteDate { get; set; }
+        /// <summary>
+        /// 是否软删除 false 未删除 true已删除
+        /// </summary>
+        public bool IsDelete { get; set; }
+        /// <summary>
+        /// 防止并发冲突锁
+        /// </summary>
+        public string ConcurrencyStamp { get; set; }
+
         public string MenuId { get; set; }
         public string Description { get; set; }
         /// <summary>
@@ -47,11 +68,11 @@ namespace A35Mge.Database.Entities
         /// 是按钮还是菜单 默认是菜单 true为按钮 false 为菜单
         /// </summary>
         public bool IsBtn { get; set; }
-         /// <summary>
+        /// <summary>
         /// 父ID 根目录默认为0
         /// </summary>
         public string ParentId { get; set; }
 
-        public ICollection<RoleMenu> roleMenus { get; set; } = new HashSet<RoleMenu>();
+
     }
 }

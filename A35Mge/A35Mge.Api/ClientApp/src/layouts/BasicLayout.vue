@@ -1,6 +1,6 @@
 <template>
   <pro-layout
-    :title="$t('后台管理系统')"
+    :title="$t('WebTitle')"
     :menus="menus"
     :collapsed="collapsed"
     :mediaQuery="query"

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace A35Mge.Database.Entities
+namespace A35Mge.Model.Permission.User
 {
-    public class User : EntityBase
+    public class UserDTO
     {
         public int Id { get; set; }
-
-        public string Password { get; set; }
 
         public string Account { get; set; }
 
@@ -19,7 +17,5 @@ namespace A35Mge.Database.Entities
         public string NickName { get; set; }
 
         public string Country { get; set; }
-
-        public ICollection<UserRole> UserRoles { get; set; } = new HashSet<UserRole>();
     }
 }

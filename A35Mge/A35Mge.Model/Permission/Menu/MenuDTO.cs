@@ -16,6 +16,8 @@ namespace A35Mge.Model.Permission
         public string component { get; set; }
 
         public string redirect { get; set; }
+        
+        public int Sort { get; set; }
         public MetaModel meta { get; set; } = new MetaModel();
         /// <summary>
         /// 是按钮还是菜单 默认是菜单 true为菜单 false 为按钮

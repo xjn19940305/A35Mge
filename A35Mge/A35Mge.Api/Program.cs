@@ -1,4 +1,5 @@
 using A35Mge.Database;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,11 +22,20 @@ namespace A35Mge.Api
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
                 var context = scope.ServiceProvider.GetRequiredService<A35MgeDbContext>();
+                var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
                 try
                 {
+                    var Init = new Init(context, mapper);
+                    //await init.ExportData();
                     var shouldSeed = !await context.Database.CanConnectAsync();
                     logger.LogInformation("Migrating Database");
                     await context.Database.MigrateAsync();
+
+                    if (shouldSeed)
+                    {
+                        logger.LogInformation($"{DateTime.Now} 初始化数据库初始化数据");
+                        await Init.Seeds();
+                    }
                     //这下面可以造一些初始数据
                     //        var students = new Student[]
                     //{

@@ -13,19 +13,19 @@
         defaultExpandAllRows
       >
         <a-table-column key="name" data-index="name" :title="$t('Menu_Name')" />
+        <a-table-column key="desc" data-index="desc" :title="$t('Desription')">
+          <template slot-scope="text, record">
+            <span>
+              <p>{{ $t(record.name) }}</p>
+            </span>
+          </template>
+        </a-table-column>
         <a-table-column key="path" data-index="path" :title="$t('Menu_Path')" />
         <a-table-column key="component" data-index="component" :title="$t('Menu_Component')" />
         <a-table-column key="description" data-index="description" :title="$t('Description')" />
         <a-table-column key="sort" data-index="sort" :title="$t('Sort')" />
         <a-table-column key="icon" data-index="icon" :title="$t('Icon')" />
-        <a-table-column key="IsBtn" data-index="IsBtn" :title="$t('IsBtn')">
-          <template slot-scope="text, record">
-            <span>
-              <p v-if="record.IsBtn">Button</p>
-              <p v-if="!record.IsBtn">Menu</p>
-            </span>
-          </template>
-        </a-table-column>
+        <a-table-column key="actionType" data-index="actionType" :title="$t('IsBtn')"> </a-table-column>
         <a-table-column key="action" :title="$t('Action')">
           <template slot-scope="text, record">
             <span>
@@ -158,8 +158,7 @@ export default {
       this.loading = true
       var local = await MenuApi.getMenuList()
       console.log(local)
-      var data = local.data || []
-      data.forEach(f => {
+      local.forEach(f => {
         if (f.IsBtn === false) {
           f.actionType = this.$t('Menu')
         } else {
@@ -226,22 +225,16 @@ export default {
           console.log('handleConfirm', values)
           if (this.op === 'add') {
             await MenuApi.Add(values)
-            this.$notification.success({
-              message: 'Success',
-              description: 'Save Success'
-            })
-            this.selectedRowKeys = []
-            this.LoadTable()
           } else {
             values.MenuId = this.MenuId
             await MenuApi.Update(values)
-            this.$notification.success({
-              message: 'Success',
-              description: 'Save Success'
-            })
-            this.selectedRowKeys = []
-            this.LoadTable()
           }
+          this.$notification.success({
+            message: this.$t('Notiication'),
+            description: this.$t('SaveOk')
+          })
+          this.selectedRowKeys = []
+          this.LoadTable()
           await this.LoadSelectTree()
           this.show = false
           this.form.resetFields()

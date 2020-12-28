@@ -20,6 +20,8 @@ namespace A35Mge.Dependency
         {
             services.TryAddScoped<ILanguageService, LanguageService>();
             services.TryAddScoped<IMenuService, MenuService>();
+            services.TryAddScoped<IRoleService, RoleService>();
+            services.TryAddScoped<IUserService, UserService>();
             return services;
         }
         public static IServiceCollection AddQuartzService(this IServiceCollection services)

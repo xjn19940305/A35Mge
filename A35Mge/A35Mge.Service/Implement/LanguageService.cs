@@ -37,7 +37,7 @@ namespace A35Mge.Service.Implement
                 list = list.Where(x => x.Code.Contains(dto.Code));
             if (!string.IsNullOrWhiteSpace(dto.Description))
                 list = list.Where(x => x.Code.Contains(dto.Description));
-            return await list.ToListAsync();
+            return (await list.ToListAsync()).OrderBy(x => x.Sort).ToList();
         }
         public async Task AddLanguageType(LanguageTypeDTO language)
         {

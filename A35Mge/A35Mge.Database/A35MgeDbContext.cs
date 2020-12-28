@@ -10,14 +10,17 @@ namespace A35Mge.Database
     {
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+
         public DbSet<LanguageType> LanguageType { get; set; }
         public DbSet<Translate> Translate { get; set; }
         public DbSet<Menu> Menu { get; set; }
 
+        public DbSet<Role> Role { get; set; }
+
+        public DbSet<RoleMenu> RoleMenus { get; set; }
 
         public DbSet<JobSchedule> JobSchedule { get; set; }
-
-        //public DbSet<Client> Client { get; set; }
 
         public A35MgeDbContext(DbContextOptions<A35MgeDbContext> options) : base(options)
         {
@@ -37,7 +40,20 @@ namespace A35Mge.Database
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
             });
+            modelBuilder.Entity("A35Mge.Database.Entities.RoleMenu", b =>
+            {
+                b.HasOne("A35Mge.Database.Entities.Menu", "Menu")
+                    .WithMany("roleMenus")
+                    .HasForeignKey("MenuId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
+                b.HasOne("A35Mge.Database.Entities.Role", "Role")
+                    .WithMany("roleMenus")
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
         }
 
     }

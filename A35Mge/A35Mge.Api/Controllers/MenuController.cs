@@ -13,9 +13,13 @@ using System.Threading.Tasks;
 
 namespace A35Mge.Api.Controllers
 {
+    /// <summary>
+    /// 菜单管理
+    /// </summary>
     [Produces("application/json")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "manager")]
     public class MenuController : ControllerBase
     {
         private readonly IMenuService menuService;

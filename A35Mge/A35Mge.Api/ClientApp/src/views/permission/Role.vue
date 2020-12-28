@@ -5,42 +5,48 @@
         <a-form layout="inline">
           <a-row :gutter="48">
             <a-col :md="8" :sm="24">
-              <a-form-item :label="$t('Trans_Code')">
-                <a-input v-model="Code" placeholder @keydown.native.stop="handleKeyDown" />
+              <a-form-item :label="$t('RoleName')">
+                <a-input v-model="RoleName" placeholder @keydown.native.stop="handleQuery" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
-              <a-form-item :label="$t('Trans_Value')">
-                <a-input v-model="Value" placeholder @keydown.native.stop="handleKeyDown" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="4" :sm="24">
               <a-button type="primary" @click="QueryTable">{{ $t('Query') }}</a-button>
               <a-button style="margin-left: 8px">{{ $t('Reset') }}</a-button>
             </a-col>
           </a-row>
         </a-form>
       </div>
-      <a-form layout="inline">
-        <a-button type="primary" style="margin-bottom: 10px" @click="Add()">{{ $t('Public_Add') }}</a-button>
-        <a-button :disabled="deleteDisable" type="danger" style="margin-left: 15px" @click="Delete()">{{
-          $t('Public_Delete')
-        }}</a-button>
+      <a-form layout="inline" style="margin-bottom: 10px">
+        <a-button type="primary" @click="Add()">
+          {{ $t('Public_Add') }}
+        </a-button>
+        <a-button
+          :disabled="deleteDisable"
+          type="danger"
+          style="margin-left: 15px"
+          @click="Delete()"
+          :loading="deleteLoading"
+        >
+          {{ $t('Public_Delete') }}</a-button
+        >
       </a-form>
       <a-table
-        :row-key="(record) => record.TranslateId"
+        :row-key="(record) => record.Id"
         :data-source="data"
-        :pagination="pagination"
         :loading="loading"
+        :pagination="pagination"
         :row-selection="rowSelection"
         @change="handleTableChange"
       >
-        <a-table-column key="TranslateCode" data-index="TranslateCode" :title="$t('Trans_Code')" />
-        <a-table-column key="TranslateContent" data-index="TranslateContent" :title="$t('Trans_Value')" />
+        <a-table-column key="RoleName" data-index="RoleName" :title="$t('RoleName')" />
+        <a-table-column key="Description" data-index="Description" :title="$t('Description')" />
+        <a-table-column key="Sort" data-index="Sort" :title="$t('Sort')" />
         <a-table-column key="action" :title="$t('Action')">
           <template slot-scope="text, record">
             <span>
-              <a @click="Save(record.TranslateId)">{{ $t('Public_Update') }}</a>
+              <a-button type="primary" @click="Save(record.Id)" :loading="updateLoading">{{
+                $t('Public_Update')
+              }}</a-button>
             </span>
           </template>
         </a-table-column>
@@ -56,32 +62,25 @@
       @ok="handleConfirm"
     >
       <a-form :form="form">
-        <a-form-item :label="$t('Trans_Code')" :hidden="true">
-          <a-input v-decorator="['TranslateId']" />
+        <a-form-item :hidden="true">
+          <a-input v-decorator="['Id']" />
         </a-form-item>
-        <a-form-item :label="$t('Lan_Code')">
-          <a-select
-            :placeholder="$t('CHOOSEONE')"
-            v-decorator="['LanguageTypeId', { rules: [{ required: true, max: 50, message: this.$t('CHOOSEONE') }] }]"
-          >
-            <a-select-option value>=={{ $t('DEFAULT_SELECT') }}==</a-select-option>
-            <a-select-option v-for="item in LangList" :key="item.Id.toString()">{{ item.Description }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item :label="$t('Trans_Code')">
+        <a-form-item :label="$t('RoleName')">
           <a-input
-            :readOnly="IsReadOnly"
-            :placeholder="$t('Trans_Code')"
-            @keydown.native.stop="handleSubmit"
-            v-decorator="['TranslateCode']"
+            :placeholder="$t('RoleName')"
+            @keydown.native.stop="handleKeyDown"
+            v-decorator="['RoleName', { rules: [{ required: true, max: 50, message: this.$t('REQUIRE') }] }]"
           />
         </a-form-item>
-        <a-form-item :label="$t('Trans_Value')">
+        <a-form-item :label="$t('Description')">
           <a-input
-            :placeholder="$t('Trans_Value')"
-            @keydown.native.stop="handleSubmit"
-            v-decorator="['TranslateContent']"
+            :placeholder="$t('Description')"
+            @keydown.native.stop="handleKeyDown"
+            v-decorator="['Description']"
           />
+        </a-form-item>
+        <a-form-item :label="$t('Sort')">
+          <a-input :placeholder="$t('Sort')" @keydown.native.stop="handleKeyDown" v-decorator="['Sort']" />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -89,24 +88,30 @@
 </template>
 
 <script>
-import languageApi from '@/api/language'
+import RoleApi from '@/api/role.js'
 export default {
   data () {
     return {
-      Code: '',
-      Value: '',
+      RoleName: '',
+      roleType: '',
       data: [],
-      pagination: { defaultCurrent: 1, defaultPageSize: 20, showSizeChanger: true, pageSizeOptions: ['50', '100', '500'] },
       loading: false,
       show: false,
       form: this.$form.createForm(this),
       updateLoading: false,
+      deleteLoading: false,
       dialogTitle: '',
-      appList: [],
-      LangList: [],
-      IsReadOnly: false,
       selectedRowKeys: [],
-      deleteDisable: true
+      deleteDisable: true,
+      pagination: { defaultCurrent: 1, defaultPageSize: 20, showSizeChanger: true, pageSizeOptions: ['50', '100', '500'] }
+    }
+  },
+  mounted () {
+    this.fetch()
+  },
+  watch: {
+    roleType (val) {
+      console.log(val)
     }
   },
   computed: {
@@ -117,27 +122,17 @@ export default {
       }
     }
   },
-  mounted () {
-    this.QueryTable()
-    this.getLangTypeList()
-  },
   methods: {
-    async getLangTypeList () {
-      var params = {
-        Code: '',
-        Description: ''
-      }
-      this.LangList = await languageApi.getLanglist(params) || []
-    },
     // 回车方法
-    handleKeyDown (e) {
+    handleQuery (e) {
       var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode
       if (eCode === 13) {
         // 调用对应的方法
         this.QueryTable()
       }
     },
-    handleSubmit (e) {
+    // 回车方法
+    handleKeyDown (e) {
       var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode
       if (eCode === 13) {
         // 调用对应的方法
@@ -146,21 +141,8 @@ export default {
     },
     // 多选的方法
     onSelectChange (selectedRowKeys) {
-      console.log(selectedRowKeys)
-      if (selectedRowKeys.length > 0) {
-        this.deleteDisable = false
-      } else {
-        this.deleteDisable = true
-      }
+      selectedRowKeys.length > 0 ? this.deleteDisable = false : this.deleteDisable = true
       this.selectedRowKeys = selectedRowKeys
-    },
-    QueryTable () {
-      this.fetch({
-        pageSize: this.pagination.defaultPageSize,
-        page: this.pagination.defaultCurrent,
-        Code: this.Code || '',
-        Value: this.Value || ''
-      })
     },
     handleTableChange (pagination, filters, sorter) {
       console.log(pagination)
@@ -171,9 +153,15 @@ export default {
       this.fetch({
         pageSize: pagination.pageSize,
         page: pagination.current,
-        Code: this.Code || '',
-        Value: this.Value || '',
+        RoleName: this.RoleName || '',
         ...filters
+      })
+    },
+    QueryTable () {
+      this.fetch({
+        pageSize: this.pagination.defaultPageSize,
+        page: this.pagination.defaultCurrent,
+        RoleName: this.RoleName || ''
       })
     },
     async fetch (params = {}) {
@@ -182,7 +170,7 @@ export default {
       params.page = params.page || pagination.defaultCurrent
       params.pageSize = params.pageSize || pagination.defaultPageSize
       this.loading = true
-      var res = await languageApi.getAllTranslate(params)
+      var res = await RoleApi.getList(params)
       pagination.total = Number(res.totalElements)
       this.loading = false
       var result = res.Data || []
@@ -193,26 +181,25 @@ export default {
     Add () {
       this.dialogTitle = this.$t('Public_Add')
       this.op = 'add'
-      this.IsReadOnly = false
       this.form.resetFields()
       this.show = true
     },
     async Save (id) {
       this.dialogTitle = this.$t('Public_Update')
       this.op = 'save'
-      this.IsReadOnly = true
       this.form.resetFields()
       this.updateLoading = true
+      var res = {}
       try {
-        var res = await languageApi.getTranslateFromId(id)
-        console.log(res)
+        console.log(id)
+        res = await RoleApi.Get(id)
+        this.setFormValues(res)
       } catch (e) {
         console.log(e)
       } finally {
         this.updateLoading = false
       }
-      res.LanguageTypeId = res.LanguageTypeId.toString()
-      this.setFormValues(res)
+      // console.log('res', res)
       this.show = true
     },
     // 新增或修改语言
@@ -220,41 +207,32 @@ export default {
       this.form.validateFields(async (err, values) => {
         if (!err) {
           if (this.op === 'add') {
-            await languageApi.addTranslate(values)
+            await RoleApi.Add(values)
           } else {
-            await languageApi.updateTranslate(values)
+            await RoleApi.Update(values)
           }
           this.$notification.success({
             message: this.$t('Notiication'),
             description: this.$t('SaveOk')
           })
           this.selectedRowKeys = []
-          this.fetch({
-            pageSize: this.pagination.defaultPageSize,
-            page: 1,
-            Code: this.Code || '',
-            Value: this.Value || ''
-          })
+          this.QueryTable()
           this.show = false
           this.form.resetFields()
         }
       })
     },
-    async Delete (ids) {
+    async Delete () {
       var data = this.selectedRowKeys
-      await languageApi.DeleteTranslate(data)
+      this.deleteLoading = true
+      await RoleApi.Delete(data)
       this.$notification.success({
         message: this.$t('Notiication'),
         description: this.$t('DeleteOk')
       })
       this.selectedRowKeys = []
-      this.fetch({
-        pageSize: this.pagination.defaultPageSize,
-        page: 1,
-        appId: this.AppId || '',
-        Code: this.Code || '',
-        Value: this.Value || ''
-      })
+      this.QueryTable()
+      this.deleteLoading = false
     },
     // 设置表单数据
     setFormValues (data) {
