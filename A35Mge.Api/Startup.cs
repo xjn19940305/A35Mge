@@ -96,6 +96,7 @@ namespace A35Mge.Api
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+            var cors = (string[])Configuration.GetSection("Cors:Url").Get(typeof(string[]));
             //允许一个或多个来源可以跨域
             services.AddCors(options =>
             {
@@ -109,10 +110,18 @@ namespace A35Mge.Api
                 options.AddPolicy("CustomCorsPolicy", policy =>
                 {
                     // 设定允许跨域的来源，有多个可以用','隔开
-                    policy.WithOrigins("http://localhost:8000")
+                    policy.WithOrigins(cors)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
+                });
+                options.AddPolicy("AllAllow", policy =>
+                {
+                    policy
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+
                 });
             });
         }
@@ -147,7 +156,13 @@ namespace A35Mge.Api
             {
                 endpoints.MapControllers();
             });
-
+            //app.UseSpa(spa =>
+            //{
+            //    if (System.Diagnostics.Debugger.IsAttached)
+            //    {
+            //        spa.UseProxyToSpaDevelopmentServer("http://localhost:8000");
+            //    }
+            //});
         }
     }
 }

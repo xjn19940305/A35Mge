@@ -56,8 +56,9 @@ export default {
   },
   mixins: [i18nMixin],
   mounted () {
+     var UserInfo = JSON.parse(localStorage.getItem('UserInfo'))
     this.currentUser = {
-      name: 'Serati Ma'
+      name: UserInfo.Account || ''
     }
     this.getLanguageList()
   },
