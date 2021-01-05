@@ -14,6 +14,10 @@ namespace A35Mge.Service.AutoMapProFile
             CreateMap<MenuExport, Menu>().ReverseMap();
             CreateMap<LanExport, LanguageType>().ReverseMap();
             CreateMap<TranslateExport, Translate>().ReverseMap();
+            CreateMap<UserExport, User>().ReverseMap();
+            CreateMap<RoleExport, Role>().ReverseMap();
+            CreateMap<UserRoleExport, UserRole>().ReverseMap();
+            CreateMap<RoleMenuExport, RoleMenu>().ReverseMap();
         }
     }
 }

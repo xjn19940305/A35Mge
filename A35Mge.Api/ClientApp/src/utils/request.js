@@ -1,9 +1,9 @@
 import axios from 'axios'
 import store from '@/store'
-import storage from 'store'
+// import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+// import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 // 创建 axios 实例
 const request = axios.create({
@@ -16,8 +16,6 @@ const request = axios.create({
 const errorHandler = (error) => {
   if (error.response) {
     const data = error.response.data
-    // 从 localstorage 获取 token
-    const token = storage.get(ACCESS_TOKEN)
     if (error.response.status === 500) {
       notification.error({
         message: '500',
@@ -30,18 +28,14 @@ const errorHandler = (error) => {
         description: data.message
       })
     }
-    if (error.response.status === 401 && !(data.result && data.result.isLogin)) {
+    if (error.response.status === 401) {
       notification.error({
         message: 'Unauthorized',
         description: 'Authorization verification failed'
       })
-      if (token) {
-        store.dispatch('Logout').then(() => {
-          setTimeout(() => {
-            window.location.reload()
-          }, 1500)
-        })
-      }
+      store.dispatch('Logout').then(() => {
+        window.location.href = '/user/login'
+      })
     }
   }
   return Promise.reject(error)
@@ -51,6 +45,10 @@ const errorHandler = (error) => {
 request.interceptors.request.use(config => {
   var global = JSON.parse(localStorage.getItem('GLOBAL'))
   config.baseURL = config.baseURL || global.BASEURL
+  var token = localStorage.getItem('Access-Token')
+  if (token) {
+    config.headers['Authorization'] = token.slice(1, token.length - 1)
+  }
   return config
 }, errorHandler)
 

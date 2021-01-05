@@ -56,6 +56,19 @@ var UserApi = {
             method: 'put',
             data
         })
+    },
+    Login (data) {
+        return request({
+            url: `api/User/Login`,
+            method: 'post',
+            data
+        })
+    },
+    GetUserInfo (token) {
+        return request({
+            url: `api/User/GetUserInfo?token=${token}`,
+            method: 'get'
+        })
     }
 }
 export default UserApi

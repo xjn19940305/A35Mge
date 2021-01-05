@@ -26,7 +26,7 @@ namespace A35Mge.Api
                 try
                 {
                     var Init = new Init(context, mapper);
-                    //await init.ExportData();
+                    //await Init.ExportData();
                     var shouldSeed = !await context.Database.CanConnectAsync();
                     logger.LogInformation("Migrating Database");
                     await context.Database.MigrateAsync();

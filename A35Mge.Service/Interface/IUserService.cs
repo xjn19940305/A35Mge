@@ -62,6 +62,12 @@ namespace A35Mge.Service.Interface
         /// <param name="Username"></param>
         /// <param name="Password"></param>
         /// <returns></returns>
-        Task<UserDTO> Login(LoginDTO dto);
+        Task<string> Login(LoginDTO dto);
+        /// <summary>
+        /// 根据token获取用户信息
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <returns></returns>
+        Task<UserDTO> GetUserInfo(string Token);
     }
 }

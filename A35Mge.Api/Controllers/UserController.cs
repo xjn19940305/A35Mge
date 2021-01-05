@@ -114,7 +114,7 @@ namespace A35Mge.Api.Controllers
         public async Task<IActionResult> SaveUserRoles([FromBody] UserRoleRequest request)
         {
             await userService.SaveUserRole(request);
-            return Ok();
+            return Ok(); 
         }
         /// <summary>
         /// 用户登录
@@ -125,6 +125,17 @@ namespace A35Mge.Api.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
             var data = await userService.Login(loginDTO);
+            return Ok(data);
+        }
+        /// <summary>
+        /// 根据token获取用户信息
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetUserInfo([FromQuery] string token)
+        {
+            var data = await userService.GetUserInfo(token);
             return Ok(data);
         }
     }

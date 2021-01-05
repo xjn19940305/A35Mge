@@ -1,8 +1,7 @@
 import storage from 'store'
-import { logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
-
+import UserApi from '@/api/user'
 const user = {
   state: {
     token: '',
@@ -35,38 +34,46 @@ const user = {
   actions: {
     // 登录
     Login ({ commit }, userInfo) {
-      return new Promise((resolve, reject) => {
-        var token = '124214asf12412'
-        storage.set(ACCESS_TOKEN, token, 7 * 24 * 60 * 60 * 1000)
-        commit('SET_TOKEN', token)
-        resolve()
+      return new Promise(async (resolve, reject) => {
+        try {
+          var token = await UserApi.Login(userInfo)
+          storage.set(ACCESS_TOKEN, token, 2 * 60 * 1000)
+          commit('SET_TOKEN', token)
+          resolve(token)
+        } catch (e) {
+          reject(e)
+        }
       })
     },
 
     // 获取用户信息
     GetInfo ({ commit }) {
-      return new Promise((resolve, reject) => {
-        // 这里是获取用户信息
-        var name = '张三'
-        commit('SET_NAME', { name: name, welcome: welcome() })
-        var obj = [{ id: 1, name: 2 }]
-        commit('SET_ROLES', obj)
-        resolve()
+      return new Promise(async (resolve, reject) => {
+        try {
+          var token = storage.get(ACCESS_TOKEN)
+          var userInfo = await UserApi.GetUserInfo(token)
+          localStorage.setItem('UserInfo', JSON.stringify(userInfo))
+          commit('SET_NAME', { name: userInfo.Account, welcome: welcome() })
+          commit('SET_ROLES', [userInfo])
+          resolve()
+        } catch (e) {
+          reject(e)
+        }
       })
     },
 
     // 登出
     Logout ({ commit, state }) {
       return new Promise((resolve) => {
-        logout(state.token).then(() => {
-          resolve()
-        }).catch(() => {
-          resolve()
-        }).finally(() => {
+        try {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           storage.remove(ACCESS_TOKEN)
-        })
+          resolve()
+        } catch (e) {
+        } finally {
+
+        }
       })
     }
 

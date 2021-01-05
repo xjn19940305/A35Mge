@@ -74,7 +74,8 @@ namespace A35Mge.Api
                 .AddAutoMapper(
                 Assembly.Load("A35Mge.Api"),
                 Assembly.Load("A35Mge.Service"))
-                .AddA35Service()
+                .AddA35Service(Configuration)
+                .AddJwtConfig(Configuration)
                 .AddQuartzService();
             services.AddSwaggerGen(c =>
             {
@@ -91,6 +92,29 @@ namespace A35Mge.Api
                     Title = "Front Web Api",
                     Description = "Front Web Api",
                     TermsOfService = new Uri("https://example.com/terms")
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "\u5728\u4e0b\u6846\u4e2d\u8f93\u5165\u8bf7\u6c42\u5934\u4e2d\u9700\u8981\u6dfb\u52a0\u004a\u0077\u0074\u6388\u6743\u0054\u006f\u006b\u0065\u006e\uff1a\u0042\u0065\u0061\u0072\u0065\u0072\u0020\u0054\u006f\u006b\u0065\u006e",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                    }
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -133,36 +157,34 @@ namespace A35Mge.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
             app.UseCors("CustomCorsPolicy");
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseSwagger(c =>
-            {
-                c.RouteTemplate = "swagger/{documentName}/swagger.json";
-                //c.SerializeAsV2 = true;
-            });
+        {
+            c.RouteTemplate = "swagger/{documentName}/swagger.json";
+            //c.SerializeAsV2 = true;
+        });
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/manager/swagger.json", "Manager");
                 c.SwaggerEndpoint("/swagger/front/swagger.json", "Front");
-                c.RoutePrefix = string.Empty;
+                //c.RoutePrefix = string.Empty;
             });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            //app.UseSpa(spa =>
-            //{
-            //    if (System.Diagnostics.Debugger.IsAttached)
-            //    {
-            //        spa.UseProxyToSpaDevelopmentServer("http://localhost:8000");
-            //    }
-            //});
+            app.UseSpa(spa =>
+            {
+                if (System.Diagnostics.Debugger.IsAttached)
+                {
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:8000");
+                }
+            });
         }
     }
 }
