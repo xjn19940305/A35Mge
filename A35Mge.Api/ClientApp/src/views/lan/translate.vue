@@ -155,9 +155,10 @@ export default {
       this.selectedRowKeys = selectedRowKeys
     },
     QueryTable () {
+      var current = this.pagination.current || this.pagination.defaultCurrent
       this.fetch({
         pageSize: this.pagination.defaultPageSize,
-        page: this.pagination.defaultCurrent,
+        page: current,
         Code: this.Code || '',
         Value: this.Value || ''
       })
@@ -229,12 +230,7 @@ export default {
             description: this.$t('SaveOk')
           })
           this.selectedRowKeys = []
-          this.fetch({
-            pageSize: this.pagination.defaultPageSize,
-            page: 1,
-            Code: this.Code || '',
-            Value: this.Value || ''
-          })
+          this.QueryTable()
           this.show = false
           this.form.resetFields()
         }
@@ -248,13 +244,7 @@ export default {
         description: this.$t('DeleteOk')
       })
       this.selectedRowKeys = []
-      this.fetch({
-        pageSize: this.pagination.defaultPageSize,
-        page: 1,
-        appId: this.AppId || '',
-        Code: this.Code || '',
-        Value: this.Value || ''
-      })
+      this.QueryTable()
     },
     // 设置表单数据
     setFormValues (data) {

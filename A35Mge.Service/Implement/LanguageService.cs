@@ -32,12 +32,13 @@ namespace A35Mge.Service.Implement
         #region 语种
         public async Task<List<LanguageTypeDTO>> GetLanguageTypeList(LanguageTypeDTO dto)
         {
-            var list = a35MgeDbContext.LanguageType.Select(x => mapper.Map<LanguageTypeDTO>(x));
+            var list = a35MgeDbContext.LanguageType.OrderBy(x => x.Sort).AsNoTracking();
             if (!string.IsNullOrWhiteSpace(dto.Code))
-                list = list.Where(x => x.Code.Contains(dto.Code));
+                list = list.Where(x => x.LanguageCode.Contains(dto.Code));
             if (!string.IsNullOrWhiteSpace(dto.Description))
-                list = list.Where(x => x.Code.Contains(dto.Description));
-            return (await list.ToListAsync()).OrderBy(x => x.Sort).ToList();
+                list = list.Where(x => x.Description.Contains(dto.Description));
+            return await list.Select(x => mapper.Map<LanguageTypeDTO>(x))
+                .ToListAsync();
         }
         public async Task AddLanguageType(LanguageTypeDTO language)
         {
