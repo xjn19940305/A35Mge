@@ -37,7 +37,8 @@ const rootRouter = {
  */
 export const generatorDynamicRouter = (token) => {
   return new Promise(async (resolve, reject) => {
-    var result = await MenuApi.getMenuList()
+    var UserInfo = JSON.parse(localStorage.getItem('UserInfo'))
+    var result = await MenuApi.getAuthMenuList(UserInfo.MenuIds)
     const menuNav = []
     const childrenNav = []
     //      后端数据, 根级树数组,  根级 PID

@@ -47,7 +47,21 @@ namespace A35Mge.Service.Implement
             var data = mapper.Map<MenuRequestDTO>(await a35Mgedbcontext.Menu.FirstOrDefaultAsync(x => x.MenuId == MenuId));
             return data;
         }
-
+        public async Task<List<MenuDTO>> GetAuthMenuList(string[] MenuIds)
+        {
+            var list = await a35Mgedbcontext.Menu
+                .Where(x => MenuIds.Contains(x.MenuId))
+                .OrderBy(x => x.Sort).ToListAsync();
+            var menuList = new List<MenuDTO>();
+            foreach (var item in list)
+            {
+                var entity = mapper.Map<Menu, MenuDTO>(item);
+                var entityMeta = mapper.Map<Menu, MetaModel>(item);
+                entity.meta = entityMeta;
+                menuList.Add(entity);
+            }
+            return menuList;
+        }
         public async Task<List<MenuDTO>> GetMenuList()
         {
             var list = await a35Mgedbcontext.Menu.OrderBy(x => x.Sort).ToListAsync();

@@ -15,6 +15,11 @@ namespace A35Mge.Service.Interface
         /// <returns></returns>
         public Task<List<MenuDTO>> GetMenuList();
         /// <summary>
+        /// 根据权限获得菜单
+        /// </summary>
+        /// <returns></returns>
+        public Task<List<MenuDTO>> GetAuthMenuList(string[] MenuIds);
+        /// <summary>
         /// 新增菜单
         /// </summary>
         /// <param name="menu"></param>

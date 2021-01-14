@@ -41,6 +41,17 @@ namespace A35Mge.Api.Controllers
             return menuList;
         }
         /// <summary>
+        /// 根据权限获取所有的菜单列表包含按钮
+        /// </summary>
+        /// <param name="menuIds"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<List<MenuDTO>> GetAuthMenuList([FromBody] string[] menuIds)
+        {
+            var menuList = await menuService.GetAuthMenuList(menuIds);
+            return menuList;
+        }
+        /// <summary>
         /// 新增菜单
         /// </summary>
         /// <param name="DTO"></param>

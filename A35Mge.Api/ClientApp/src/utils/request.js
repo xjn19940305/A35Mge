@@ -14,6 +14,12 @@ const request = axios.create({
 
 // 异常拦截处理器
 const errorHandler = (error) => {
+  if (error.message.includes('Network Error')) {
+    notification.error({
+      message: 'NetWork',
+      description: 'NetWork Error'
+    })
+  }
   if (error.response) {
     const data = error.response.data
     if (error.response.status === 500) {
@@ -59,7 +65,7 @@ request.interceptors.response.use((response) => {
 
 const installer = {
   vm: {},
-  install (Vue) {
+  install(Vue) {
     Vue.use(VueAxios, request)
   }
 }

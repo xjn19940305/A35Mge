@@ -6,6 +6,13 @@ var MenuApi = {
             method: 'get'
         })
     },
+    getAuthMenuList (data) {
+        return request({
+            url: `api/Menu/GetAuthMenuList`,
+            method: 'post',
+            data
+        })
+    },
     Add (data) {
         return request({
             url: `api/Menu/AddMenu`,
