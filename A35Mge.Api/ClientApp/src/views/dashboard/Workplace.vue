@@ -9,7 +9,7 @@
           <div class="content-title">
             {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome }}</span>
           </div>
-          <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
+          <div>本平台采用ant-design-pro+.net core3.1+redis开发</div>
         </div>
       </div>
     </template>

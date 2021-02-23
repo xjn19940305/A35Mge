@@ -65,7 +65,10 @@ namespace A35Mge.Service.Implement
         public async Task<PagedViewModel> GetList(UserRequest request)
         {
             var model = new PagedViewModel();
-            var data = a35MgeDbContext.Users.AsNoTracking();
+            var data = a35MgeDbContext
+                .Users
+                .OrderByDescending(x=>x.CreateDate)
+                .AsNoTracking();
             if (!string.IsNullOrWhiteSpace(request.Account))
                 data = data.Where(x => x.Account.Contains(request.Account));
             if (!string.IsNullOrWhiteSpace(request.Email))

@@ -77,7 +77,10 @@ namespace A35Mge.Service.Implement
         public async Task<PagedViewModel> GetAllTranslate(TranslateRequest request)
         {
             var model = new PagedViewModel();
-            var data = a35MgeDbContext.Translate.AsNoTracking();
+            var data = a35MgeDbContext
+                .Translate
+                .OrderByDescending(x => x.CreateDate)
+                .AsNoTracking();
             if (!string.IsNullOrWhiteSpace(request.Code))
                 data = data.Where(x => x.TranslateCode.Contains(request.Code));
             if (!string.IsNullOrWhiteSpace(request.Value))

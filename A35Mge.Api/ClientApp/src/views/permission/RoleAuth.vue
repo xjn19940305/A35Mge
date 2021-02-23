@@ -27,7 +27,7 @@
               defaultExpandAllRows
             >
               <a-table-column key="name" data-index="name" :title="$t('Menu_Name')"> </a-table-column>
-              <a-table-column key="desc" data-index="desc" :title="$t('Desription')">
+              <a-table-column key="desc" data-index="desc" :title="$t('Description')">
                 <template slot-scope="text, record">
                   <span>
                     <p>{{ $t(record.name) }}</p>

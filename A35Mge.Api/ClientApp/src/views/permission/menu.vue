@@ -13,16 +13,9 @@
         defaultExpandAllRows
       >
         <a-table-column key="name" data-index="name" :title="$t('Menu_Name')" />
-        <a-table-column key="desc" data-index="desc" :title="$t('Desription')">
-          <template slot-scope="text, record">
-            <span>
-              <p>{{ $t(record.name) }}</p>
-            </span>
-          </template>
-        </a-table-column>
         <a-table-column key="path" data-index="path" :title="$t('Menu_Path')" />
         <a-table-column key="component" data-index="component" :title="$t('Menu_Component')" />
-        <a-table-column key="description" data-index="description" :title="$t('Description')" />
+        <a-table-column key="Description" data-index="Description" :title="$t('Description')" />
         <a-table-column key="sort" data-index="sort" :title="$t('Sort')" />
         <a-table-column key="icon" data-index="icon" :title="$t('Icon')" />
         <a-table-column key="actionType" data-index="actionType" :title="$t('IsBtn')"> </a-table-column>
