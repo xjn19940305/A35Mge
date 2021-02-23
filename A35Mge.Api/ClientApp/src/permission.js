@@ -17,6 +17,12 @@ const defaultRoutePath = '/dashboard/workplace'
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`))
+  // init LoadConfig
+  var LoadConfigStatus = store.getters.isLoadConfig
+  if (!LoadConfigStatus) {
+    store.dispatch('InitLoadConfig').then((res) => {
+    })
+  }
   /* has token */
   var token = storage.get(ACCESS_TOKEN)
   if (token) {

@@ -69,22 +69,8 @@ export default {
     }
   },
   created () {
-    this.Init()
   },
   methods: {
-    Init () {
-      var dt = new Date()
-      fetch('/static/config.json?t=' + dt.getTime())
-        .then(response => response.json())
-        .then(ok => {
-          var obj = {
-            BASEURL: ok.baseUrl,
-            UEDITORURL: ok.UeditorUrl
-          }
-          console.log('obj', obj)
-          localStorage.setItem('GLOBAL', JSON.stringify(obj))
-        })
-    },
     ...mapActions(['Login', 'Logout']),
     handleSubmit (e) {
       e.preventDefault()
