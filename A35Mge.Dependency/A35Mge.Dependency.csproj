@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+    <PackageReference Include="UEditor.Core" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\A35Mge.Enum\A35Mge.Enum.csproj" />
+    <ProjectReference Include="..\A35Mge.Infrastructure\A35Mge.Infrastructure.csproj" />
+    <ProjectReference Include="..\A35Mge.Model\A35Mge.Model.csproj" />
+    <ProjectReference Include="..\A35Mge.MySqlDatabase\A35Mge.MySqlDatabase.csproj" />
+    <ProjectReference Include="..\A35Mge.Redis\A35Mge.Redis.csproj" />
+    <ProjectReference Include="..\A35Mge.ScheduleTask\A35Mge.ScheduleTask.csproj" />
+    <ProjectReference Include="..\A35Mge.Service\A35Mge.Service.csproj" />
+  </ItemGroup>
+
+</Project>
