@@ -16,7 +16,7 @@
         <a-table-column key="path" data-index="path" :title="$t('Menu_Path')" />
         <a-table-column key="component" data-index="component" :title="$t('Menu_Component')" />
         <a-table-column key="Description" data-index="Description" :title="$t('Description')" />
-        <a-table-column key="sort" data-index="sort" :title="$t('Sort')" />
+        <a-table-column key="Sort" data-index="Sort" :title="$t('Sort')" />
         <a-table-column key="icon" data-index="icon" :title="$t('Icon')" />
         <a-table-column key="actionType" data-index="actionType" :title="$t('IsBtn')"> </a-table-column>
         <a-table-column key="action" :title="$t('Action')">

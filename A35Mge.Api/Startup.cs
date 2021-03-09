@@ -7,11 +7,13 @@ using A35Mge.Service.GlobalException;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -157,6 +159,31 @@ namespace A35Mge.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "upload");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(path)
+                {
+
+                },
+                RequestPath = "/upload",
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age36000");
+                }
+
+            });
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(path)
+                {
+
+                },
+                RequestPath = "/upload"
+            });
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("CustomCorsPolicy");
