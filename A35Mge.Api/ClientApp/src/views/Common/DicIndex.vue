@@ -46,6 +46,7 @@
         <a-table-column key="Id" data-index="Id" :title="$t('Id')" />
         <a-table-column key="Type" data-index="Type" :title="$t('Dic_Type')" />
         <a-table-column key="Name" data-index="Name" :title="$t('Dic_Name')" />
+        <a-table-column key="Sort" data-index="Sort" :title="$t('Sort')" />
         <a-table-column key="CreateDate" data-index="CreateDate" :title="$t('CreateDate')">
           <template slot-scope="text, record">
             <span>
@@ -73,11 +74,14 @@
         @ok="onSubmit"
       >
         <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-          <a-form-model-item ref="Type" :label="$t('Dic_Type')">
+          <a-form-model-item ref="Type" :label="$t('Dic_Type')" prop="Type">
             <a-input v-model="form.Type" />
           </a-form-model-item>
-          <a-form-model-item ref="Name" :label="$t('Dic_Name')" prop="Name">
+          <a-form-model-item ref="Name" :label="$t('Dic_Name')" prop="Name" @keydown.native.stop="handleSubmit">
             <a-input v-model="form.Name" />
+          </a-form-model-item>
+          <a-form-model-item ref="Sort" :label="$t('Sort')" prop="Sort" @keydown.native.stop="handleSubmit">
+            <a-input v-model="form.Sort" />
           </a-form-model-item>
         </a-form-model>
       </a-modal>
@@ -104,7 +108,8 @@ export default {
       wrapperCol: { span: 14 },
       form: {
         Type: '',
-        Name: ''
+        Name: '',
+        Sort: null
       },
       rules: {
         Name: [
@@ -127,6 +132,13 @@ export default {
     }
   },
   methods: {
+    handleSubmit (e) {
+      var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode
+      if (eCode === 13) {
+        // 调用对应的方法
+        this.onSubmit()
+      }
+    },
     ResetQuery () {
       this.Title = ''
     },
@@ -241,6 +253,11 @@ export default {
     },
     resetForm () {
       this.$refs.ruleForm.resetFields()
+      this.form = {
+        Type: '',
+        Name: '',
+        Sort: null
+      }
     }
   }
 }

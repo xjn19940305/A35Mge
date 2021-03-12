@@ -8,6 +8,8 @@ namespace A35Mge.Model.CommonList
     {
         public int Id { get; set; }
         public string Type { get; set; }
+
+        public int Sort { get; set; }
         /// <summary>
         /// 分类名称
         /// </summary>

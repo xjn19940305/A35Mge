@@ -58,6 +58,7 @@
           </template>
         </a-table-column>
         <a-table-column key="Name" data-index="Name" :title="$t('DicList_Name')" />
+        <a-table-column key="Sort" data-index="Sort" :title="$t('Sort')" />
         <a-table-column key="CreateDate" data-index="CreateDate" :title="$t('CreateDate')">
           <template slot-scope="text, record">
             <span>
@@ -84,8 +85,11 @@
         @ok="onSubmit"
       >
         <a-form-model ref="ruleForm" :model="form" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
-          <a-form-model-item ref="Name" :label="$t('DicList_Name')" prop="Name">
+          <a-form-model-item ref="Name" :label="$t('DicList_Name')" prop="Name" @keydown.native.stop="handleSubmit">
             <a-input v-model="form.Name" />
+          </a-form-model-item>
+          <a-form-model-item ref="Sort" :label="$t('Sort')" prop="Sort" @keydown.native.stop="handleSubmit">
+            <a-input v-model="form.Sort" />
           </a-form-model-item>
         </a-form-model>
       </a-modal>
@@ -112,7 +116,8 @@ export default {
       wrapperCol: { span: 14 },
       form: {
         Name: '',
-        DicTypeId: 0
+        DicTypeId: 0,
+        Sort: null
       },
       rules: {
         Name: [
@@ -136,6 +141,13 @@ export default {
     }
   },
   methods: {
+    handleSubmit (e) {
+      var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode
+      if (eCode === 13) {
+        // 调用对应的方法
+        this.onSubmit()
+      }
+    },
     Init () {
       this.DicTypeId = this.$route.query.Id
       this.form.DicTypeId = this.DicTypeId
@@ -224,6 +236,7 @@ export default {
     onSubmit () {
       this.$refs.ruleForm.validate(async valid => {
         if (valid) {
+          console.log(this.form)
           if (this.op === 'add') {
             DicListApi.Add(this.form).then((res) => {
               this.$notification.success({
@@ -250,6 +263,11 @@ export default {
     },
     resetForm () {
       this.$refs.ruleForm.resetFields()
+      this.form = {
+        Name: '',
+        DicTypeId: this.DicTypeId,
+        Sort: null
+      }
     }
   }
 }

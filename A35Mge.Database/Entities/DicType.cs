@@ -17,6 +17,8 @@ namespace A35Mge.Database.Business
         /// </summary>
         public string Name { get; set; }
 
+        public int Sort { get; set; }
+
         public ICollection<DicList> DicList { get; set; } = new HashSet<DicList>();
     }
 }

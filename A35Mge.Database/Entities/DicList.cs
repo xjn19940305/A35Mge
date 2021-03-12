@@ -15,6 +15,8 @@ namespace A35Mge.Database.Business
         public int DicTypeId { get; set; }
 
         public string Name { get; set; }
+
+        public int Sort { get; set; }
         public DicType DicType { get; set; }
     }
 }
