@@ -1,4 +1,5 @@
-﻿using A35Mge.Database.Entities;
+﻿using A35Mge.Database.Business;
+using A35Mge.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ namespace A35Mge.Database
         public DbSet<RoleMenu> RoleMenus { get; set; }
 
         public DbSet<JobSchedule> JobSchedule { get; set; }
+        public DbSet<DicType> dicType { get; set; }
+
+        public DbSet<DicList> dicList { get; set; }
 
         public A35MgeDbContext(DbContextOptions<A35MgeDbContext> options) : base(options)
         {

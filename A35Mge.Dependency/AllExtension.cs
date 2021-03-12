@@ -28,6 +28,8 @@ namespace A35Mge.Dependency
             services.TryAddScoped<IMenuService, MenuService>();
             services.TryAddScoped<IRoleService, RoleService>();
             services.TryAddScoped<IUserService, UserService>();
+            services.TryAddScoped<IDicTypeService, DicTypeService>();
+            services.TryAddScoped<IDicListService, DicListService>();
             services.TryAddScoped<RedisCache>();
             var ue = cofiguration.GetSection("UEditor").Value;
             services.AddUEditorService(ue);

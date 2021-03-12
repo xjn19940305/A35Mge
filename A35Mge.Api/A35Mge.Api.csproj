@@ -32,10 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\A35Mge.Dependency\A35Mge.Dependency.csproj" />
   </ItemGroup>
 

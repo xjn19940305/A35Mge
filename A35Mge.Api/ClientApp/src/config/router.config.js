@@ -112,6 +112,12 @@ export const constantRouterMap = [
         name: 'Dashboard',
         component: () => import('@/views/dashboard/Workplace'),
         meta: { title: 'Dashboard', show: false }
+      },
+      {
+        path: '/Common/DictonaryDetail',
+        name: 'CommonDictonaryDetail',
+        component: () => import('@/views/Common/DictonaryDetail'),
+        meta: { title: 'DictonaryDetail', show: false }
       }
     ]
   },
